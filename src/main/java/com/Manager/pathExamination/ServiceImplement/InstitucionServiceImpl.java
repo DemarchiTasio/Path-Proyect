@@ -54,6 +54,5 @@ public class InstitucionServiceImpl implements InstitucionService {
         Estado eActual = i.getEstado();
         Estado eAux = estadoRepository.findById(eActual.getId_estado() + 1).orElse(null);
         i.setEstado(eAux);
-
     }
 }

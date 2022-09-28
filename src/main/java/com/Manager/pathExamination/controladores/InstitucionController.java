@@ -78,6 +78,12 @@ public class InstitucionController {
 
     // ---------------------------------Instituciones-------------------------------------------
 
+    @GetMapping("/instituciones/cargar/{id_institucion}")
+    public String institucionCargar(int id, Model model) {
+        model.addAttribute("newInstitucion", institucionService.findByIdInstitucion(id));
+        return "instForm";
+    }
+
     @GetMapping("/instituciones")
     public String institucionesList(Model model) {
         List<Institucion> instituciones = institucionService.findAllInstitucion();
