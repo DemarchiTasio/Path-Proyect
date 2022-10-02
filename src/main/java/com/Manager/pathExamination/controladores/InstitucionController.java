@@ -1,5 +1,6 @@
 package com.Manager.pathExamination.controladores;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.Manager.pathExamination.Repository.EstadoRepository;
 import com.Manager.pathExamination.Repository.PaisRepository;
@@ -70,9 +72,17 @@ public class InstitucionController {
         return "redirect:/informes";
     }
 
-    @GetMapping("/informes/siguienteEstado/{id_institucion}")
-    public String siguienteEstado(@PathVariable(name = "id_institucion") int id) {
-        institucionService.setEstadoSiguiente(institucionService.findByIdInstitucion(id));
+    // @GetMapping("/informes/siguienteEstado/{id_institucion}")
+    // public String siguienteEstado(@PathVariable(name = "id_institucion") int id) {
+    //     institucionService.setEstadoSiguiente(institucionService.findByIdInstitucion(id));
+    //     return "redirect:/informes";
+    // }
+
+    @PostMapping("/informes/tiempoContacto")
+    public String setTiempoContacto (@RequestParam(name = "id_institucion") int id,
+    @RequestParam(name = "tiempo_contacto") String dateTime){
+        institucionService.setTiempoContacto(id, dateTime);
+        // institucionService.setEstadoSiguiente(institucionService.findByIdInstitucion(id));
         return "redirect:/informes";
     }
 

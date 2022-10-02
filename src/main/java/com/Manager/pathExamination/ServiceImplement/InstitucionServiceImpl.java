@@ -1,5 +1,6 @@
 package com.Manager.pathExamination.ServiceImplement;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,36 +24,45 @@ public class InstitucionServiceImpl implements InstitucionService {
     private EstadoRepository estadoRepository;
 
     @Override
-    @Transactional
+    // @Transactional
     public void saveInstitucion(Institucion i) {
         institucionRepository.save(i);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     public List<Institucion> findAllInstitucion() {
 
         return (List<Institucion>) institucionRepository.findAll();
     }
 
     @Override
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     public Institucion findByIdInstitucion(int id) {
         return institucionRepository.findById(id).orElse(null);
     }
 
     @Override
-    @Transactional
+    // @Transactional
     public void deleteInstitucion(int id) {
         Institucion i = findByIdInstitucion(id);
         i.setVisibilidad(true);
     }
 
     @Override
-    @Transactional
+    // @Transactional
     public void setEstadoSiguiente(Institucion i) {
         Estado eActual = i.getEstado();
         Estado eAux = estadoRepository.findById(eActual.getId_estado() + 1).orElse(null);
         i.setEstado(eAux);
+
+    }
+
+    @Override
+    public void setTiempoContacto(int id, String dateTime) {
+        Institucion i = institucionRepository.findById(id).orElse(null);
+        i.setTiempo_contacto(dateTime);
+        setEstadoSiguiente(i);
+        saveInstitucion(i);
     }
 }

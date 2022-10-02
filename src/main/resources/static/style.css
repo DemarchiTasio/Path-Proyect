@@ -63,3 +63,7 @@ html,body{
     text-shadow: 1px 1px 4px #004969;
     cursor: pointer;
 }
+
+#alumnTabel{
+    visibility: hidden;
+}

@@ -1,5 +1,6 @@
 package com.Manager.pathExamination.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.Manager.pathExamination.model.Estado;
@@ -11,4 +12,5 @@ public interface InstitucionService {
     public Institucion findByIdInstitucion(int id);
     public void deleteInstitucion(int id);
     public void setEstadoSiguiente(Institucion i);
+    public void setTiempoContacto(int id, String dateTime);
 }

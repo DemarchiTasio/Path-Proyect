@@ -96,10 +96,11 @@
                     <div class="col-md-4">
                         <label for="pais" class="form-label">Pais:</label>
                         <select  name="pais" th:field="*{pais}" class="form-select">
-                            <option th:each=" pais : ${listPais}" th:value="${pais}" th:text="${pais.nombre}"></option>
-                            <!-- <option th:value="Chile" th:text="Chile"></option>
+                            <!-- <option th:each=" pais : ${listPais}" th:value="${pais}" th:text="${pais.nombre}"></option> -->
+                            <option th:value="Argentina" th:text="Argentina"></option>
+                            <option th:value="Chile" th:text="Chile"></option>
                             <option th:value="Uruguay" th:text="Uruguay"></option>
-                            <option th:value="Brasil" th:text="Brasil"></option> -->
+                            <option th:value="Brasil" th:text="Brasil"></option>
                         </select>
                     </div>
                     <div class="col-md-4">
