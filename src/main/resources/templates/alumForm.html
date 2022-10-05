@@ -9,12 +9,12 @@
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Formulario Informe</title>
+    <title>Formulario Alumno</title>
 </head>
 </head>
 
 <body>
-    <div class="grid-container w-100 d-flex justify-content-center">
+    <div class="grid-container w-100 d-flex justify-content-center mb-5">
 
         <!-- ---------------------------------NavBar------------------------------------------- -->
 
@@ -72,36 +72,40 @@
         <!-- ---------------------------------Center Container------------------------------------------ -->
 
         <div class="center-form d-grid justify-content-center">
-            <h1 class="col-1 mb-4 d-flex justify-content-center w-100">Datos de la Institucion</h1>
+            <h1 class="col-1  d-flex justify-content-center w-100">Datos del alumno</h1>
             <div>
 
-                <!-- ---------------------------------Form Informe------------------------------------------- -->
+                <!-- ---------------------------------Formulario Alumno------------------------------------------- -->
 
-                <form action="#" class="row g-3 needs-validation" th:action="@{/informes/guardar}" method="post"
-                    th:object="${institucion}" novalidate>
-                    <input type="hidden" name="id_institucion" th:field="*{id_institucion}">
-                    <input type="hidden" name="estado" th:field="*{estado}">
-                    <div class="col-12">
+                <form action="#" class="row g-3" th:action="@{/alumnos/guardar}" method="post" th:object="${alumno}">
+
+                    <!-- ---------------------------------Input Group------------------------------------------- -->
+                    <div class="col-6">
                         <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" name="nombre" th:field="*{nombre}" class="form-control" required>
+                        <input type="text" name="nombre" th:field="*{nombre}" class="form-control">
                     </div>
-                    <div class="col-md-6">
-                        <label for="tipo" class="form-label">Tipo:</label>
-                        <select name="tipo" th:field="*{tipo}" class="form-control form-select" required>
-                            <option th:value="Colegio" th:text="Colegio"></option>
-                            <option th:value="Instituto" th:text="Instituto"></option>
-                            <option th:value="Particular" th:text="Particular"></option>
-                        </select>
+                    <div class="col-6">
+                        <label for="apellido" class="form-label">Apellido:</label>
+                        <input type="text" name="apellido" th:field="*{apellido}" class="form-control">
                     </div>
-                    <div class="col-md-6">
-                        <label for="contacto" class="form-label">Contacto:</label>
-                        <select name="contacto" th:field="*{contacto}" class="form-control form-select" required>
-                            <option th:value="Twitter" th:text="Twitter"></option>
-                            <option th:value="Facebook" th:text="Facebook"></option>
-                            <option th:value="Instagram" th:text="Instagram"></option>
-                        </select>
+                    <div class="col-8">
+                        <label for="fecha_nacimiento" class="form-label">Fecha Nacimiento:</label>
+                        <input type="date" name="fecha_nacimiento" th:field="*{fecha_nacimiento}" class="form-control">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-4">
+                        <label for="documento" class="form-label">DNI:</label>
+                        <input type="number" name="documento" th:field="*{documento}" class="form-control">
+                    </div>
+
+                    <div class="col-6">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" name="email" th:field="*{email}" class="form-control">
+                    </div>
+                    <div class="col-6">
+                        <label for="telefono" class="form-label">Telefono:</label>
+                        <input type="tel" name="telefono" th:field="*{telefono}" class="form-control">
+                    </div>
+                    <div class="col-4">
                         <label for="pais" class="form-label">Pais:</label>
                         <select name="pais" th:field="*{pais}" class="form-select" required>
                             <!-- <option th:each=" pais : ${listPais}" th:value="${pais}" th:text="${pais.nombre}"></option> -->
@@ -111,44 +115,66 @@
                             <option th:value="Brasil" th:text="Brasil"></option>
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-4">
                         <label for="provincia" class="form-label">Provincia:</label>
-                        <input type="text" class="form-control" name="provincia" th:field="*{provincia}" required>
+                        <input type="text" name="provincia" th:field="*{provincia}" class="form-control">
                     </div>
-                    <div class="col-md-4">
-                        <label for="ciudad" class="form-label">Ciudad:</label>
-                        <input type="text" class="form-control" name="ciudad" th:field="*{ciudad}" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" th:field="*{email}" required>
+                    <div class="col-4">
+                        <label for="localidad" class="form-label">Localidad:</label>
+                        <input type="text" name="localidad" th:field="*{localidad}" class="form-control">
                     </div>
                     <div class="col-md-6">
-                        <label for="telefono" class="form-label">Telefono:</label>
-                        <input type="tel" class="form-control" name="telefono" th:field="*{telefono}" required>
+                        <label for="tipo" class="form-label">Nivel a Examinar:</label>
+                        <select name="tipo" th:field="*{nivel_examinar}" class="form-control form-select">
+                            <option th:value="'A1- '+'SPA '+'level '+'I'" th:text="'A1- '+'SPA '+'level '+'I'"></option>
+                            <option th:value="'A1 '+ 'SPA '+ 'level '+ 'II'" th:text="'A1 '+ 'SPA '+ 'level '+ 'II'">
+                            </option>
+                            <option th:value="'A1+ '+ 'SPA '+ 'level '+ 'III'"
+                                th:text="'A1+ '+ 'SPA '+ 'level '+ 'III'"></option>
+                            <option th:value="'A1- '+ 'Entry'" th:text="'A1- '+ 'Entry'"></option>
+                            <option th:value="'A1 '+ 'Access'" th:text="'A1 '+ 'Access'"></option>
+                            <option th:value="'A1+ '+ 'Achiever'" th:text="'A1+ '+ 'Achiever'"></option>
+                            <option th:value="'A2 '+ 'Preliminary'" th:text="'A2 '+ 'Preliminary'"></option>
+                            <option th:value="'A2+ '+ 'Elementary'" th:text="'A2+ '+ 'Elementary'"></option>
+                            <option th:value="'B1 '+ 'Progress'" th:text="'B1 '+ 'Progress'"></option>
+                            <option th:value="'B1+ '+ 'Onwards'" th:text="'B1+ '+ 'Onwards'"></option>
+                            <option th:value="'B2 '+ 'Competency'" th:text="'B2 '+ 'Competency'"></option>
+                            <option th:value="'B2+ '+ 'Forward'" th:text="'B2+ '+ 'Forward'"></option>
+                        </select>
                     </div>
-                    <div class="col-12">
+                    <div class="col-md-6">
+                        <label for="contacto" class="form-label">Modulo:</label>
+                        <select name="contacto" th:field="*{modulo}" class="form-control form-select">
+                            <option th:value="Oral" th:text="Oral"></option>
+                            <option th:value="Listening " th:text="Listening "></option>
+                            <option th:value="Written" th:text="Written"></option>
+                        </select>
                     </div>
-                    <div class="d-flex justify-content-center gap-2">
-                        <button type="submit" class="btn btn-primary w-25">Guardar</button>
-                        <a class="w-25" th:href="@{/informes}"><button type="button" name="cancelar" value="Cancelar"
-                                class="btn btn-secondary w-100">Cancelar</button></a>
+
+                    <!-- ---------------------------------Fin Input Group------------------------------------------- -->
+
+                    <div class="d-flex justify-content-end gap-3">
+                        <button type="submit" class="btn btn-primary fs-5" th:href="@{/alumnos/guardarFinalizado}">Finalizar</button>
+                        <button type="submit" class="btn btn-primary"><i
+                                class='bx bxs-right-arrow-alt fs-5'></i></button>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <a class="d-flex w-50 justify-content-end text-decoration-none" th:href="@{/alumnos}"><button
+                                type="button" name="cancelar" value="Cancelar"
+                                class="btn btn-secondary w-50 fs-5">Cancelar</button></a>
                     </div>
                 </form>
             </div>
         </div>
-
-        <!-- ---------------------------------Fin Center Container------------------------------------------- -->
-
     </div>
 
     <!-- ---------------------------------Script Boostrap------------------------------------------- -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         crossorigin="anonymous"></script>
 
-    <!-- ---------------------------------Script Validation------------------------------------------- -->
-
+    <!-- ---------------------------------Script Validacion de Datos------------------------------------------- -->
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (() => {
@@ -170,7 +196,6 @@
             })
         })()
     </script>
-
 
 </body>
 

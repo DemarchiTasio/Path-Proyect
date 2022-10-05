@@ -1,12 +1,9 @@
 package com.Manager.pathExamination.ServiceImplement;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.Manager.pathExamination.Repository.EstadoRepository;
 import com.Manager.pathExamination.Repository.InstitucionRepository;
@@ -23,6 +20,7 @@ public class InstitucionServiceImpl implements InstitucionService {
     @Autowired
     private EstadoRepository estadoRepository;
 
+    // ---------------------------------CRUD-------------------------------------------
     @Override
     // @Transactional
     public void saveInstitucion(Institucion i) {
@@ -47,7 +45,10 @@ public class InstitucionServiceImpl implements InstitucionService {
     public void deleteInstitucion(int id) {
         Institucion i = findByIdInstitucion(id);
         i.setVisibilidad(true);
+        saveInstitucion(i);
     }
+
+    // ---------------------------------Seteo de Variables-------------------------------------------
 
     @Override
     // @Transactional
@@ -64,5 +65,28 @@ public class InstitucionServiceImpl implements InstitucionService {
         i.setTiempo_contacto(dateTime);
         setEstadoSiguiente(i);
         saveInstitucion(i);
+    }
+
+    @Override
+    public void setReunion(int id, String dateTime) {
+        Institucion i = institucionRepository.findById(id).orElse(null);
+        i.setReuniones(dateTime);
+        setEstadoSiguiente(i);
+        saveInstitucion(i);
+        
+    }
+
+    @Override
+    public void setContactado(int id) {
+        Institucion i = institucionRepository.findById(id).orElse(null);
+        i.setContactado(true);
+        setEstadoSiguiente(i);
+        saveInstitucion(i);        
+    }
+
+    @Override
+    public void setContrato(Institucion i) {
+        i.setContrato(true);
+        saveInstitucion(i); 
     }
 }

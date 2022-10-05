@@ -24,6 +24,9 @@ public class Alumno {
     private int documento;
     private String email;
     private String telefono;
+    private String provincia;
+    private String pais;
+    private String localidad;
     private String nivel_examinar;
     private String modulo;
     private boolean visibilidad;
