@@ -64,6 +64,10 @@ html,body{
     cursor: pointer;
 }
 
+.dropdown-menu{
+    border: none;
+}
+
 #alumnTabel{
     visibility: hidden;
 }

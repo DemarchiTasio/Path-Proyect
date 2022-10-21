@@ -24,10 +24,10 @@
                     data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="offcanvas side-navbar offcanvas-start" tabindex="-1" id="offcanvasDarkNavbar"
+                <div class="w-25 offcanvas side-navbar offcanvas-start" tabindex="-1" id="offcanvasDarkNavbar"
                     aria-labelledby="offcanvasDarkNavbarLabel">
                     <div class="offcanvas-header d-flex justify-content-center">
-                        <img class="logo-img" src="/LogoPath.jpg" alt="">
+                        <img class="logo-img" src="LogoPath.jpg" alt="">
                         <button type="button" class="btn-close position-absolute top-0 end-0 m-3 btn-close-black"
                             data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
@@ -51,15 +51,28 @@
                                     <span class="link-name">Student</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link text-dark fs-5" href="#">
                                     <i class="bx bx-book"></i>
                                     <span class="link-name">Exam</span>
                                 </a>
+                            </li> -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-dark fs-5 dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-book"></i>
+                                    <span class="link-name">Exam</span>
+                                </a>
+                                <ul class="dropdown-menu border-0 ms-3">
+                                    <li><a class="dropdown-item" th:href="@{/examenes}"><i class='bx bxs-pencil pe-2'></i>Gestion de
+                                            Examen</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/examenesDay}"> <i class='bx bx-calendar-star pe-2'></i>Dia
+                                            de Examen</a></li>
+                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark fs-5" href="#">
-                                    <i class="bx bxs-certification"></i>
+                                    <i class='fas fa-award'></i>
                                     <span class="link-name">Certification</span>
                                 </a>
                             </li>
@@ -83,13 +96,14 @@
                     <input type="hidden" name="estado" th:field="*{estado}">
                     <div class="col-12">
                         <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" name="nombre" th:field="*{nombre}" class="form-control" required>
+                        <input type="text" name="nombre" th:field="*{nombre}" class="form-control" maxlength="25" required>
                     </div>
                     <div class="col-md-6">
                         <label for="tipo" class="form-label">Tipo:</label>
-                        <select name="tipo" th:field="*{tipo}" class="form-control form-select" required>
+                        <select name="tipo" th:field="*{tipo}" class="form-control form-select" maxlength="25" required>
                             <option th:value="Colegio" th:text="Colegio"></option>
                             <option th:value="Instituto" th:text="Instituto"></option>
+                            <option th:value="Universidad" th:text="Universidad         "></option>
                             <option th:value="Particular" th:text="Particular"></option>
                         </select>
                     </div>
@@ -113,19 +127,19 @@
                     </div>
                     <div class="col-md-4">
                         <label for="provincia" class="form-label">Provincia:</label>
-                        <input type="text" class="form-control" name="provincia" th:field="*{provincia}" required>
+                        <input type="text" class="form-control" name="provincia" th:field="*{provincia}" maxlength="30" required>
                     </div>
                     <div class="col-md-4">
                         <label for="ciudad" class="form-label">Ciudad:</label>
-                        <input type="text" class="form-control" name="ciudad" th:field="*{ciudad}" required>
+                        <input type="text" class="form-control" name="ciudad" th:field="*{ciudad}" maxlength="30" required>
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" th:field="*{email}" required>
+                        <input type="email" class="form-control" name="email" th:field="*{email}" maxlength="30" required>
                     </div>
                     <div class="col-md-6">
                         <label for="telefono" class="form-label">Telefono:</label>
-                        <input type="tel" class="form-control" name="telefono" th:field="*{telefono}" required>
+                        <input type="number" class="form-control" name="telefono" th:field="*{telefono}" maxlength="15" required>
                     </div>
                     <div class="col-12">
                     </div>

@@ -49,6 +49,7 @@ public class Institucion {
     private int cant_aulas;
     private int alumnos_aula;
     private int cant_baños;
+    private int cant_alumnos_inscribirse;
 
     private boolean visibilidad;
     private boolean contrato;

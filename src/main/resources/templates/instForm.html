@@ -22,10 +22,10 @@
                     data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="offcanvas side-navbar offcanvas-start" tabindex="-1" id="offcanvasDarkNavbar"
+                <div class="w-25 offcanvas side-navbar offcanvas-start" tabindex="-1" id="offcanvasDarkNavbar"
                     aria-labelledby="offcanvasDarkNavbarLabel">
                     <div class="offcanvas-header d-flex justify-content-center">
-                        <img class="logo-img" src="/LogoPath.jpg" alt="">
+                        <img class="logo-img" src="LogoPath.jpg" alt="">
                         <button type="button" class="btn-close position-absolute top-0 end-0 m-3 btn-close-black"
                             data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
@@ -49,15 +49,28 @@
                                     <span class="link-name">Student</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link text-dark fs-5" href="#">
                                     <i class="bx bx-book"></i>
                                     <span class="link-name">Exam</span>
                                 </a>
+                            </li> -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-dark fs-5 dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-book"></i>
+                                    <span class="link-name">Exam</span>
+                                </a>
+                                <ul class="dropdown-menu border-0 ms-3">
+                                    <li><a class="dropdown-item" th:href="@{/examenes}"><i class='bx bxs-pencil pe-2'></i>Gestion de
+                                            Examen</a></li>
+                                    <li><a class="dropdown-item" th:href="@{/examenesDay}"> <i class='bx bx-calendar-star pe-2'></i>Dia
+                                            de Examen</a></li>
+                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark fs-5" href="#">
-                                    <i class="bx bxs-certification"></i>
+                                    <i class='fas fa-award'></i>
                                     <span class="link-name">Certification</span>
                                 </a>
                             </li>
@@ -82,7 +95,7 @@
                     <!-- ---------------------------------Inputs Group------------------------------------------- -->
                     <div class="col-6">
                         <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" name="nombre" th:field="*{nombre}" class="form-control" required>
+                        <input type="text" name="nombre" th:field="*{nombre}" class="form-control" maxlength="30" required>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
@@ -108,63 +121,63 @@
                     <div class="col-md-4">
                         <label for="provincia" class="form-label">Provincia:</label>
                         <input type="text" class="form-control" name="provincia" placeholder="Buenos Aires"
-                            th:field="*{provincia}" required>
+                            th:field="*{provincia}" maxlength="30" required>
                     </div>
                     <div class="col-md-4">
                         <label for="ciudad" class="form-label">Ciudad:</label>
-                        <input type="text" class="form-control" name="ciudad" th:field="*{ciudad}" required>
+                        <input type="text" class="form-control" name="ciudad" th:field="*{ciudad}" maxlength="30" required>
                     </div>
                     <div class="col-md-4">
                         <label for="localidad" class="form-label">Localidad:</label>
-                        <input type="text" class="form-control" name="localidad" th:field="*{localidad}" required>
+                        <input type="text" class="form-control" name="localidad" th:field="*{localidad}" maxlength="30" required>
                     </div>
                     <div class="col-md-4">
                         <label for="direccion" class="form-label">Direccion:</label>
-                        <input type="text" class="form-control" name="direccion" th:field="*{direccion}" required>
+                        <input type="text" class="form-control" name="direccion" th:field="*{direccion}" maxlength="30" required>
                     </div>
                     <div class="col-md-4">
                         <label for="codigo_postal" class="form-label">Codigo Postal:</label>
-                        <input type="text" class="form-control" name="codigo_postal" th:field="*{codigo_postal}"
+                        <input type="text" class="form-control" name="codigo_postal" th:field="*{codigo_postal}" maxlength="30"
                             required>
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" th:field="*{email}" required>
+                        <input type="email" class="form-control" name="email" th:field="*{email}" maxlength="30" required>
                     </div>
                     <div class="col-md-6">
                         <label for="telefono" class="form-label">Telefono:</label>
-                        <input type="tel" class="form-control" name="telefono" th:field="*{telefono}" required>
+                        <input type="number" class="form-control" name="telefono" th:field="*{telefono}" maxlength="15"  required>
                     </div>
                     <div class="col-4">
                         <label for="facebook" class="form-label">Facebook:</label>
-                        <input type="text" name="facebook" th:field="*{facebook}" class="form-control" >
+                        <input type="text" name="facebook" th:field="*{facebook}" maxlength="60" class="form-control" >
                     </div>
                     <div class="col-4">
                         <label for="instagram" class="form-label">Instagram:</label>
-                        <input type="text" name="instagram" th:field="*{instagram}" class="form-control" >
+                        <input type="text" name="instagram" th:field="*{instagram}" maxlength="60" class="form-control" >
                     </div>
                     <div class="col-4">
                         <label for="web" class="form-label">Pagina Web:</label>
-                        <input type="text" name="web" th:field="*{web}" class="form-control" >
+                        <input type="text" name="web" th:field="*{web}" maxlength="100" class="form-control" >
                     </div>
                     <span class="placeholder col-12 placeholder-xs mt-5"></span>
                     <h3 class="text-center">Datos del director</h3>
                     <div class="col-6">
                         <label for="nombre_director" class="form-label">Nombre Director:</label>
-                        <input type="text" name="nombre_director" th:field="*{nombre_director}" class="form-control" required>
+                        <input type="text" name="nombre_director" th:field="*{nombre_director}" maxlength="25" class="form-control" required>
                     </div>
                     <div class="col-6">
                         <label for="apellido_director" class="form-label">Apellido Director:</label>
-                        <input type="text" name="apellido_director" th:field="*{apellido_director}" class="form-control" required>
+                        <input type="text" name="apellido_director" th:field="*{apellido_director}" maxlength="25" class="form-control" required>
                     </div>
                     <div class="col-6">
                         <label for="nacimiento_director" class="form-label">Fecha Nacimiento Director:</label>
                         <input type="date" name="nacimiento_director" th:field="*{nacimiento_director}" class="form-control"
-                            required>
+                        max="2010-10-20" required>
                     </div>
                     <div class="col-6">
                         <label for="documento_director" class="form-label">DNI:</label>
-                        <input type="number" name="documento_director" th:field="*{documento_director}" class="form-control"
+                        <input type="number" name="documento_director" th:field="*{documento_director}" maxlength="10" class="form-control"
                             required>
                     </div>
 
@@ -187,23 +200,23 @@
                                     <label for="personal_disponible" class="form-label">Personal disponible para el dia
                                         de examen:</label>
                                     <input type="number" name="personal_disponible" th:field="*{personal_disponible}"
-                                        class="form-control">
+                                        class="form-control" maxlength="3">
                                 </div>
                                 <div class="col-6">
                                     <label for="cant_aulas" class="form-label">Cantidad de aulas disponibles para el dia
                                         de examen:</label>
                                     <input type="number" name="cant_aulas" th:field="*{cant_aulas}"
-                                        class="form-control">
+                                        class="form-control" maxlength="3">
                                 </div>
                                 <div class="col-6">
                                     <label for="alumnos_aula" class="form-label">Cantidad de alumnos por aula:</label>
                                     <input type="number" name="alumnos_aula" th:field="*{alumnos_aula}"
-                                        class="form-control">
+                                        class="form-control" maxlength="3">
                                 </div>
                                 <div class="col-6">
                                     <label for="cant_baños" class="form-label">Cantidad de baños:</label>
                                     <input type="number" name="cant_baños" th:field="*{cant_baños}"
-                                        class="form-control">
+                                        class="form-control" maxlength="3">
                                 </div>
                             </div>
                         </div>
@@ -216,10 +229,10 @@
                         <div class="collapse" id="collapseAfiliado">
                             <div class="card card-body">
                                 <div class="col-6">
-                                    <label for="personal_disponible" class="form-label">Cantidad de alumnos estimada por
+                                    <label for="cant_alumnos_inscribirse" class="form-label">Cantidad de alumnos estimada por
                                         año:</label>
-                                    <input type="number" name="personal_disponible" th:field="*{personal_disponible}"
-                                        class="form-control">
+                                    <input type="number" name="cant_alumnos_inscribirse" th:field="*{cant_alumnos_inscribirse}"
+                                        class="form-control" maxlength="3">
                                 </div>
                             </div>
                         </div>

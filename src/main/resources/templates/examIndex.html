@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -12,11 +12,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-    <title>Lista Alumno</title>
-
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <title>Document</title>
 </head>
 
 <body>
+
     <div class="grid-container w-100 d-flex justify-content-center">
 
         <!-- ---------------------------------NavBar------------------------------------------- -->
@@ -91,66 +92,88 @@
 
         <div id="alumnTabel" class="center d-flex justify-content-center visible">
             <div class="table-content p-3 rounded-2">
-                <a class="btn-new-report mb-4 shadow w-25 rounded" role="button" th:href="@{/alumnos/agregar}">Cargar
-                    Alumno</a>
+                <!-- <a class="btn-new-report mb-4 shadow w-25 rounded visually-hidden" role="button" th:href="@{/alumnos/agregar}" >Cargar
+                    Alumno</a> -->
 
-                <!-- ---------------------------------Tabla Alumnos------------------------------------------- -->
+                <!-- ---------------------------------Tabla Examenes------------------------------------------- -->
 
-                <table id="alumnoTable" class="display" style="width:100%">
+                <table id="alumnoTable" class="display mt-5" style="width:100%">
                     <thead>
                         <tr>
                             <!-- <th>#</th> -->
                             <th>Nombre</th>
                             <th>Apellido</th>
-                            <th>Nacimiento</th>
+                            <!-- <th>Nacimiento</th> -->
                             <th>DNI</th>
                             <th>Email</th>
-                            <!-- <th>Institucion</th> -->
+                            <!-- <th >Institucion a <br> Presentarse</th> -->
+                            <th>Localidad</th>
                             <th>Telefono</th>
                             <th>Nivel a Examinar</th>
                             <th>Modulo</th>
-                            <!-- <th></th> -->
-                            <th>Action</th>
+                            <th>Institucion a <br> presentarse</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each=" alumno,iter: ${listAlumno}" th:if="${alumno.visibilidad != true}">
+                        <tr th:each=" examen: ${examenes}" th:if="${examen.alumno.visibilidad != true}">
                             <!-- <td th:text="${iter.index}"></td> -->
-                            <td th:text="${alumno.nombre}"></td>
-                            <td th:text="${alumno.apellido}"></td>
-                            <td th:text="${alumno.fecha_nacimiento}"></td>
-                            <td th:text="${alumno.documento}"></td>
-                            <td th:text="${alumno.email}"></td>
-                            <!-- <td th:text="${alumno.institucion.nombre}"></td> -->
-                            <td th:text="${alumno.telefono}"></td>
-                            <td th:text="${alumno.nivel_examinar}"></td>
-                            <td th:text="${alumno.modulo}">
-                            </td>
-                            <!-- <td class="action">
-                                            <a th:href="@{/informes/siguienteEstado/}+${alumno.id_alumno}"><i
-                                                    class='bx bxs-chevrons-right'></i></a></td> -->
-                            <td class="action">
-                                <a th:href="@{/alumnos/editar/}+${alumno.id_alumno}"><i class="bx bx-edit"></i></a>
-                                <a data-bs-toggle="modal" th:attr="data-bs-target='#exampleModal'+${alumno.id_alumno}"><i class="bx bx-trash"></i></a>
+                            <td th:text="${examen.alumno.nombre}"></td>
+                            <td th:text="${examen.alumno.apellido}"></td>
+                            <!-- <td th:text="${alumno.fecha_nacimiento}"></td> -->
+                            <td th:text="${examen.alumno.documento}"></td>
+                            <td th:text="${examen.alumno.email}"></td>
+                            <!-- <td th:if="${examen.institucion != null}" th:text="${examen.institucion.nombre}"></td> -->
+                            <td th:text="${examen.alumno.localidad}"></td>
+                            <td th:text="${examen.alumno.telefono}"></td>
+                            <td th:text="${examen.alumno.nivel_examinar}"></td>
+                            <td th:text="${examen.alumno.modulo}"></td>
+                            <td class="d-flex justify-content-center">
                                 <!-- Button trigger modal -->
-
+                                <div th:if="${examen.institucion == null}">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#exampleModal'+${examen.id_examen}"
+                                        th:disabled="${examen.institucion != null}">
+                                        <!-- <i class='bx bx-edit-alt p-0 m-0'></i> -->
+                                        <i class='bx bxs-school p-0 m-0'></i>
+                                        Asignar
+                                    </button>
+                                </div>
+                                <div th:if="${examen.institucion != null}">
+                                   <strong><p th:text="${examen.institucion.nombre}" class="text-primary"></p></strong> 
+                                </div>
                                 <!-- Modal -->
-                                <div class="modal fade" th:id="${'exampleModal'+{alumno.id_alumno}}" tabindex="-1"
+                                <div class="modal fade" th:id="${'exampleModal'+{examen.id_examen}}" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Desea eliminar al alumno <Strong><span th:text="${alumno.nombre}"></span> <span th:text="${alumno.apellido}"></span></Strong></h1>
+                                    <div class="modal-dialog">
+                                        <form action="#" class="needs-validation" novalidate
+                                            th:action="@{/examenes/institucion}" method="post" th:object="${examen}">
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"
+                                                        th:text="${examen.alumno.nombre}"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <label for="setInstitucion" class="form-label">Set
+                                                            institucion:</label>
+                                                        <select name="setInstitucion" class="form-select"
+                                                            aria-label="Default select example">
+                                                            <option th:each=" inst : ${instituciones}"
+                                                                th:value="${inst.id_institucion}"
+                                                                th:if="${inst.visibilidad != true && inst.contrato != false}"
+                                                                th:text="${inst.nombre}"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Asignar Institución</button>
+                                                </div>
                                             </div>
-                                            <div class="modal-body">
-                                                <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                                      Al eliminar el alumno, no se volvera a mostrar en el listado
-                                                  </div>
-                                            </div>
-                                            <div class="modal-footer justify-content-center">
-                                               <a th:href="@{/alumnos/eliminar/}+${alumno.id_alumno}"> <button type="button" class="btn btn-primary">Confirmar</button></a>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </td>
@@ -178,7 +201,30 @@
         $(document).ready(function () {
             $('#alumnoTable').DataTable();
         });</script>
+    </script>
 
+    <script>
+        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+
+        const alert = (message, type) => {
+            const wrapper = document.createElement('div')
+            wrapper.innerHTML = [
+                `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                `   <div>${message}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('')
+
+            alertPlaceholder.append(wrapper)
+        }
+
+        const alertTrigger = document.getElementById('liveAlertBtn')
+        if (alertTrigger) {
+            alertTrigger.addEventListener('click', () => {
+                alert('Nice, you triggered this alert message!', 'success')
+            })
+        }
+    </script>
 
 </body>
 
