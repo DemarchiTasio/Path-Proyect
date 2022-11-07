@@ -35,64 +35,81 @@
                             data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="canvas-body mt-2">
-                        <ul class="navbar-nav justify-content-end flex-grow-1 ms-4">
+                        <ul class="navbar-nav d-flex justify-content-end flex-grow-1 ms-4">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/informes}">
+                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/reports}">
                                     <i class="bx bxs-report"></i>
-                                    <span class="link-name">Informes</span>
+                                    <span class="link-name">Reports</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/instituciones}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/institutions}">
                                     <i class="bx bxs-school"></i>
                                     <span class="link-name">Institutions</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/alumnos}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/students}">
                                     <i class="bx bxs-graduation"></i>
                                     <span class="link-name">Student</span>
                                 </a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
-                                    <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
-                                </a>
-                            </li> -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link text-dark fs-5 dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
+                                    <span class="link-name">Exams</span>
                                 </a>
                                 <ul class="dropdown-menu border-0 ms-3">
-                                    <li><a class="dropdown-item" th:href="@{/examenes}"><i
-                                                class='bx bxs-pencil pe-2'></i>Gestion de
-                                            Examen</a></li>
-                                    <li><a class="dropdown-item" th:href="@{/examenesDay}"> <i
-                                                class='bx bx-calendar-star pe-2'></i>Dia
-                                            de Examen</a></li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/exams}">
+                                            <i class='bx bxs-pencil pe-2'></i>
+                                            Exam Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/dayOfExams}">
+                                            <i class='bx bx-calendar-star pe-2'></i>Day of Exams
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
+                                <a class="nav-link text-dark fs-5" th:href="@{/certificates}">
                                     <i class='fas fa-award'></i>
-                                    <span class="link-name">Certification</span>
+                                    <span class="link-name">Certificates</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
+                                <a class="nav-link text-dark fs-5" th:href="@{/users}">
+                                    <i class='bx bxs-user-detail'></i>
+                                    <span class="link-name">Users Management</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" th:href="@{/charts}">
+                                    <i class='bx bx-bar-chart-alt'></i>
+                                    <span class="link-name">Statistics</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                    <div id="navbar" class="nav-item d-flex align-items-end h-100">
+                        <form th:action="@{/logout}" method="post">
+                            <a class="nav-link text-dark mb-3 ms-2 fs-5" href="#" onclick="this.parentNode.submit();">
+                                <i class='bx bx-exit'></i>
+                                    <span class="link-name">Logout</span>
+                                </a>
+                        </form>
+                    </div>
                 </div>
-            </div>
         </nav>
 
         <!-- ---------------------------------Center Container------------------------------------------- -->
 
         <div id="alumnTabel" class="center d-flex justify-content-center visible">
             <div class="table-content p-3 rounded-2">
-                <a class="btn-new-report mb-4 shadow w-25 rounded" role="button" th:href="@{/alumnos/agregar}">Cargar
-                    Alumno</a>
+                <a class="btn-new-report mb-4 shadow w-25 rounded" role="button" th:href="@{/users/singIn}">New Employee</a>
 
                 <!-- ---------------------------------Tabla Alumnos------------------------------------------- -->
 
@@ -100,55 +117,46 @@
                     <thead>
                         <tr>
                             <!-- <th>#</th> -->
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Nacimiento</th>
-                            <th>DNI</th>
-                            <th>Email</th>
-                            <!-- <th>Institucion</th> -->
-                            <th>Telefono</th>
-                            <th>Nivel a Examinar</th>
-                            <th>Modulo</th>
-                            <!-- <th></th> -->
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Date of Birth</th>
+                            <th>Email/Username</th>
+                            <th>Role of user</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each=" alumno,iter: ${listAlumno}" th:if="${alumno.visibilidad != true}">
-                            <!-- <td th:text="${iter.index}"></td> -->
-                            <td th:text="${alumno.nombre}"></td>
-                            <td th:text="${alumno.apellido}"></td>
-                            <td th:text="${alumno.fecha_nacimiento}"></td>
-                            <td th:text="${alumno.documento}"></td>
-                            <td th:text="${alumno.email}"></td>
-                            <!-- <td th:text="${alumno.institucion.nombre}"></td> -->
-                            <td th:text="${alumno.telefono}"></td>
-                            <td th:text="${alumno.nivel_examinar}"></td>
-                            <td th:text="${alumno.modulo}">
-                            </td>
-                            <!-- <td class="action">
-                                            <a th:href="@{/informes/siguienteEstado/}+${alumno.id_alumno}"><i
-                                                    class='bx bxs-chevrons-right'></i></a></td> -->
+                        <tr th:each=" empleado: ${empleados}" th:if="${empleado.visibilidad != true}">
+                            <td th:text="${empleado.nombre}"></td>
+                            <td th:text="${empleado.apellido}"></td>
+                            <td th:text="${empleado.fecha_nacimineto}"></td>
+                            <td th:text="${empleado.email}"></td>
+                            <td th:text="${empleado.rol}"></td>
                             <td class="action">
-                                <a th:href="@{/alumnos/editar/}+${alumno.id_alumno}"><i class="bx bx-edit"></i></a>
-                                <a data-bs-toggle="modal" th:attr="data-bs-target='#exampleModal'+${alumno.id_alumno}"><i class="bx bx-trash"></i></a>
-                                <!-- Button trigger modal -->
+                                <a data-bs-toggle="modal"
+                                    th:attr="data-bs-target='#exampleModal'+${empleado.id_empleado}"><i
+                                        class="bx bx-trash"></i></a>
 
-                                <!-- Modal -->
-                                <div class="modal fade" th:id="${'exampleModal'+{alumno.id_alumno}}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" th:id="${'exampleModal'+{empleado.id_empleado}}"
+                                    tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Desea eliminar al alumno <Strong><span th:text="${alumno.nombre}"></span> <span th:text="${alumno.apellido}"></span></Strong></h1>
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Do you want to delete <Strong><span
+                                                            th:text="${empleado.nombre + ' '+ empleado.apellido}">? </span></Strong></h1>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                                      Al eliminar el alumno, no se volvera a mostrar en el listado
-                                                  </div>
+                                                    Al eliminar el empleado, no se volvera a mostrar en el listado
+                                                </div>
                                             </div>
                                             <div class="modal-footer justify-content-center">
-                                               <a th:href="@{/alumnos/eliminar/}+${alumno.id_alumno}"> <button type="button" class="btn btn-primary">Confirmar</button></a>
+                                                <a
+                                                    th:href="@{/users}">
+                                                    <button type="button" class="btn btn-secondary">Cancel</button></a>
+                                                <a
+                                                    th:href="@{/users/delete/}+${empleado.id_empleado}">
+                                                    <button type="button" class="btn btn-primary">Confirm</button></a>
                                             </div>
                                         </div>
                                     </div>

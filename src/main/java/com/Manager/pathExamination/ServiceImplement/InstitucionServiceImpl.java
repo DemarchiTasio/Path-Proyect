@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.Manager.pathExamination.Model.Estado;
+import com.Manager.pathExamination.Model.Institucion;
 import com.Manager.pathExamination.Repository.EstadoRepository;
 import com.Manager.pathExamination.Repository.InstitucionRepository;
 import com.Manager.pathExamination.Service.InstitucionService;
-import com.Manager.pathExamination.model.Estado;
-import com.Manager.pathExamination.model.Institucion;
 
 @Service
 public class InstitucionServiceImpl implements InstitucionService {
@@ -48,7 +48,8 @@ public class InstitucionServiceImpl implements InstitucionService {
         saveInstitucion(i);
     }
 
-    // ---------------------------------Seteo de Variables-------------------------------------------
+    // ---------------------------------Seteo de
+    // Variables-------------------------------------------
 
     @Override
     // @Transactional
@@ -73,7 +74,7 @@ public class InstitucionServiceImpl implements InstitucionService {
         i.setReuniones(dateTime);
         setEstadoSiguiente(i);
         saveInstitucion(i);
-        
+
     }
 
     @Override
@@ -81,12 +82,12 @@ public class InstitucionServiceImpl implements InstitucionService {
         Institucion i = institucionRepository.findById(id).orElse(null);
         i.setContactado(true);
         setEstadoSiguiente(i);
-        saveInstitucion(i);        
+        saveInstitucion(i);
     }
 
     @Override
     public void setContrato(Institucion i) {
         i.setContrato(true);
-        saveInstitucion(i); 
+        saveInstitucion(i);
     }
 }

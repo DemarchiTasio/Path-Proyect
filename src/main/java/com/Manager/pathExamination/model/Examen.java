@@ -1,6 +1,6 @@
-package com.Manager.pathExamination.model;
+package com.Manager.pathExamination.Model;
 
-import java.util.Collection;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,14 +8,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
 import lombok.Data;
 
 @Data
@@ -35,11 +31,39 @@ public class Examen {
     //         name = "examen_id", referencedColumnName = "id_examen"),
     //         inverseJoinColumns = @JoinColumn(name = "alumno_id", referencedColumnName = "id_alumno")
     //         )
-    @ManyToOne
-    private Alumno alumno;
+    private String nivel_examinar;
     private String modulo;
     private float nota;
+    private boolean asistencia;
+    private boolean entregado;
+
     @ManyToOne
     private Institucion institucion;
-    private boolean asistencia;
+    
+    @ManyToOne
+    private Alumno alumno;
+    
+    @OneToOne
+    private Estado estado;
+
+    public Examen(String nivel_examinar, String modulo, float nota, Alumno alumno, Estado estado) {
+        this.nivel_examinar = nivel_examinar;
+        this.modulo = modulo;
+        this.nota = nota;
+        this.alumno = alumno;
+        this.estado = estado;
+    }
+
+    public Examen(String nivel_examinar, String modulo, float nota, Alumno alumno) {
+        this.nivel_examinar = nivel_examinar;
+        this.modulo = modulo;
+        this.nota = nota;
+        this.alumno = alumno;
+    }
+
+    public Examen() {
+    }
+
+    
+
 }

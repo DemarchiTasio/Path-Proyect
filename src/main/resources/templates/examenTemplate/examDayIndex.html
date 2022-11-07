@@ -36,56 +36,74 @@
                             data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="canvas-body mt-2">
-                        <ul class="navbar-nav justify-content-end flex-grow-1 ms-4">
+                        <ul class="navbar-nav d-flex justify-content-end flex-grow-1 ms-4">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/informes}">
+                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/reports}">
                                     <i class="bx bxs-report"></i>
-                                    <span class="link-name">Informes</span>
+                                    <span class="link-name">Reports</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/instituciones}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/institutions}">
                                     <i class="bx bxs-school"></i>
                                     <span class="link-name">Institutions</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/alumnos}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/students}">
                                     <i class="bx bxs-graduation"></i>
                                     <span class="link-name">Student</span>
                                 </a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
-                                    <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
-                                </a>
-                            </li> -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link text-dark fs-5 dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
+                                    <span class="link-name">Exams</span>
                                 </a>
                                 <ul class="dropdown-menu border-0 ms-3">
-                                    <li><a class="dropdown-item" th:href="@{/examenes}"><i
-                                                class='bx bxs-pencil pe-2'></i>Gestion de
-                                            Examen</a></li>
-                                    <li><a class="dropdown-item" th:href="@{/examenesDay}"> <i
-                                                class='bx bx-calendar-star pe-2'></i>Dia
-                                            de Examen</a></li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/exams}">
+                                            <i class='bx bxs-pencil pe-2'></i>
+                                            Exam Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/dayOfExams}">
+                                            <i class='bx bx-calendar-star pe-2'></i>Day of Exams
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
+                                <a class="nav-link text-dark fs-5" th:href="@{/certificates}">
                                     <i class='fas fa-award'></i>
-                                    <span class="link-name">Certification</span>
+                                    <span class="link-name">Certificates</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
+                                <a class="nav-link text-dark fs-5" th:href="@{/users}">
+                                    <i class='bx bxs-user-detail'></i>
+                                    <span class="link-name">Users Management</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" th:href="@{/charts}">
+                                    <i class='bx bx-bar-chart-alt'></i>
+                                    <span class="link-name">Statistics</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                    <div id="navbar" class="nav-item d-flex align-items-end h-100">
+                        <form th:action="@{/logout}" method="post">
+                            <a class="nav-link text-dark mb-3 ms-2 fs-5" href="#" onclick="this.parentNode.submit();">
+                                <i class='bx bx-exit'></i>
+                                    <span class="link-name">Logout</span>
+                                </a>
+                        </form>
+                    </div>
                 </div>
-            </div>
         </nav>
 
         <!-- ---------------------------------Center Container------------------------------------------- -->
@@ -101,22 +119,23 @@
                 <table id="alumnoTable" class="display mt-5" style="width:100%">
                     <thead>
                         <tr>
-                            <!-- <th>#</th> -->
-                            <th>Nombre</th>
-                            <th>Apellido</th>
+                            <th>Nº Student</th>
+                            <th>Name</th>
+                            <th>Surname</th>
                             <!-- <th>Nacimiento</th> -->
                             <th>DNI</th>
-                            <th>Institucion a Presentarse</th>
+                            <th>Institution <br> to attend</th>
                             <th>Email</th>
-                            <th>Telefono</th>
-                            <th>Nivel a Examinar</th>
-                            <th>Modulo</th>
-                            <th>Asistio ?</th>
+                            <th>Phone number</th>
+                            <th>Exam level</th>
+                            <th>Module</th>
+                            <th sec:authorize="hasAnyRole('ENCARGADO','ADMINISTRADOR')">Attendance</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each=" examen: ${examenes}" th:if="${examen.institucion != null && examen.alumno.visibilidad != true}">
-                            <!-- <td th:text="${iter.index}"></td> -->
+                        <tr th:each=" examen: ${examenes}"
+                            th:if="${examen.institucion != null && examen.alumno.visibilidad != true && examen.estado == null}">
+                            <td th:text="${examen.id_examen}"></td>
                             <td th:text="${examen.alumno.nombre}"></td>
                             <td th:text="${examen.alumno.apellido}"></td>
                             <!-- <td th:text="${alumno.fecha_nacimiento}"></td> -->
@@ -124,44 +143,41 @@
                             <td th:text="${examen.institucion.nombre}"></td>
                             <td th:text="${examen.alumno.email}"></td>
                             <td th:text="${examen.alumno.telefono}"></td>
-                            <td th:text="${examen.alumno.nivel_examinar}"></td>
-                            <td th:text="${examen.alumno.modulo}"></td>
-                            <td>
+                            <td th:text="${examen.nivel_examinar}"></td>
+                            <td th:text="${examen.modulo}"></td>
+                            <td sec:authorize="hasAnyRole('ENCARGADO','ADMINISTRADOR')">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" role="checkbox"
                                         id="flexSwitchCheckDefault" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal" th:checked="${examen.asistencia}">
+                                        th:attr="data-bs-target='#exampleModal'+${examen.id_examen}"
+                                        th:checked="${examen.asistencia}">
                                 </div>
-                                <div class="modal fade" id="exampleModal" tabindex="-1"
+                                <div class="modal fade" th:id="${'exampleModal'+{examen.id_examen}}" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
-                                        <form action="#" th:action="@{/examenes/asistencia}" method="post"
+                                        <form action="#" th:action="@{/dayOfExams/attendance}" method="post"
                                             th:object="${examen}" class="needs-validation" novalidate>
                                             <input type="hidden" name="id_examen" th:value="*{id_examen}">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h2>Confirmar Asistencia</h2>
+                                                    <h2>Confirm assistance</h2>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="alert alert-primary" role="alert">
-                                                        Confirma asistencia del alumno <Strong><span
-                                                                th:text="${examen.alumno.nombre}"></span> <span
-                                                                th:text="${examen.alumno.apellido}"></span></Strong> al
-                                                        examen del dia de la fecha ?
+                                                        Do you confirm student <Strong><span
+                                                            th:text="${examen.alumno.nombre+' '+examen.alumno.apellido}"></span></Strong> attendance  to the exam of the day?
                                                     </div>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" role="checkbox"
                                                             id="asistencias" required>
-                                                        <label class="form-check-label" for="asistencias">Confirmo la
-                                                            Asistencia !</label>
+                                                        <label class="form-check-label" for="asistencias">Yes I confirm de attendance !</label>
                                                     </div>
                                                 </div>
 
                                                 <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">Confirmar
-                                                        Asistencia</button>
+                                                    <button type="submit" class="btn btn-primary">Confirm</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -174,7 +190,7 @@
                 <div class="d-flex justify-content-end mt-3">
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#finalModal">
-                        Finalizar dia de Examen
+                        Finish day of Exam
                     </button>
 
                     <!-- Modal -->
@@ -183,31 +199,29 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmacion de fin de Examen
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation end of Exam Day
                                     </h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
-                                <form action="" class="needs-validation" novalidate>
-                                <div class="modal-body ">
-                                    
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" role="checkbox" id="asistencias"
-                                        required>
-                                        <label class="form-check-label" for="asistencias">Se han confirmado las
-                                            asistencia de los alumnos</label>
+                                <form th:action="@{/certificate/save}" method="post" class="needs-validation" novalidate>
+                                    <div class="modal-body ">
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" role="checkbox"
+                                                id="asistencias" required>
+                                            <label class="form-check-label" for="asistencias">Student attendance confirmed.</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" role="checkbox"
+                                                id="entregaExamenes" required>
+                                            <label class="form-check-label" for="entregaExamenes" required>Exams have been handed out in the office.</label>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" role="checkbox"
-                                            id="entregaExamenes" required>
-                                        <label class="form-check-label" for="entregaExamenes" required>Se han entregado los
-                                            examenes en la oficina.</label>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Finish the day</button>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Finalizar día</button>
-                                </div>
-                            </form>
+                                </form>
                             </div>
                         </div>
                     </div>

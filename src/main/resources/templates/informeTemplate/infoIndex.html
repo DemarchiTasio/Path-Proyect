@@ -12,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <title>Lista Informe</title>
 
 </head>
@@ -35,63 +36,81 @@
                             data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="canvas-body mt-2">
-                        <ul class="navbar-nav justify-content-end flex-grow-1 ms-4">
+                        <ul class="navbar-nav d-flex justify-content-end flex-grow-1 ms-4">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/informes}">
+                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/reports}">
                                     <i class="bx bxs-report"></i>
-                                    <span class="link-name">Informes</span>
+                                    <span class="link-name">Reports</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/instituciones}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/institutions}">
                                     <i class="bx bxs-school"></i>
                                     <span class="link-name">Institutions</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/alumnos}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/students}">
                                     <i class="bx bxs-graduation"></i>
                                     <span class="link-name">Student</span>
                                 </a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
-                                    <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
-                                </a>
-                            </li> -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link text-dark fs-5 dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
+                                    <span class="link-name">Exams</span>
                                 </a>
                                 <ul class="dropdown-menu border-0 ms-3">
-                                    <li><a class="dropdown-item" th:href="@{/examenes}"><i
-                                                class='bx bxs-pencil pe-2'></i>Gestion de
-                                            Examen</a></li>
-                                    <li><a class="dropdown-item" th:href="@{/examenesDay}"> <i
-                                                class='bx bx-calendar-star pe-2'></i>Dia
-                                            de Examen</a></li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/exams}">
+                                            <i class='bx bxs-pencil pe-2'></i>
+                                            Exam Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/dayOfExams}">
+                                            <i class='bx bx-calendar-star pe-2'></i>Day of Exams
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
+                                <a class="nav-link text-dark fs-5" th:href="@{/certificates}">
                                     <i class='fas fa-award'></i>
-                                    <span class="link-name">Certification</span>
+                                    <span class="link-name">Certificates</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
+                                <a class="nav-link text-dark fs-5" th:href="@{/users}">
+                                    <i class='bx bxs-user-detail'></i>
+                                    <span class="link-name">Users Management</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" th:href="@{/charts}">
+                                    <i class='bx bx-bar-chart-alt'></i>
+                                    <span class="link-name">Statistics</span>
                                 </a>
                             </li>
                         </ul>
+                    </div>                    
+                    <div id="navbar" class="nav-item d-flex align-items-end h-100">
+                        <form th:action="@{/logout}" method="post">
+                            <a class="nav-link text-dark mb-3 ms-2 fs-5" href="#" onclick="this.parentNode.submit();">
+                                <i class='bx bx-exit'></i>
+                                    <span class="link-name">Logout</span>
+                                </a>
+                        </form>
                     </div>
                 </div>
-            </div>
         </nav>
 
         <!-- ---------------------------------Center Container------------------------------------------- -->
         <div class="center d-flex justify-content-center">
             <div class="table-content p-3 rounded-2">
-                <a class="btn-new-report mb-4 shadow w-25 rounded" role="button" th:href="@{/informes/agregar}">Crear
-                    Informe</a>
+                <a class="btn-new-report mb-4 shadow w-25 rounded" role="button" th:href="@{/reports/addReport}"
+                    sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','VENTAS','RECLUTADOR' )">New Report</a>
 
                 <!-- ---------------------------------Tabla Informes------------------------------------------- -->
 
@@ -99,17 +118,18 @@
                     <thead>
                         <tr>
                             <th hidden>#</th>
-                            <th>Nombre</th>
-                            <th>Contacto</th>
-                            <th>Tipo</th>
-                            <th>Pais</th>
-                            <th>Provincia</th>
-                            <th>Ciudad</th>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Type</th>
+                            <th>Country</th>
+                            <th>State</th>
+                            <th>City</th>
                             <th>Email</th>
-                            <th>Telefono</th>
-                            <th>Estado</th>
-                            <th>Siguiente <br> Estado</th>
-                            <th>Action</th>
+                            <th>Phone number</th>
+                            <th>Condition</th>
+                            <th sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','VENTAS','RECLUTADOR' )">Next <br>
+                                Condition</th>
+                            <th sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','VENTAS','RECLUTADOR' )">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,12 +144,12 @@
                             <td th:text="${institucion.ciudad}"></td>
                             <td th:text="${institucion.email}"></td>
                             <td th:text="${institucion.telefono}"></td>
-                            <td th:text="${institucion.estado.nombre}">
-                            </td>
-                            <td class="action d-flex justify-content-center">
+                            <td th:text="${institucion.estado.nombre}"></td>
+                            <td class="action d-flex justify-content-center"
+                                sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','VENTAS','RECLUTADOR' )">
 
                                 <!-- ---------------------------------Modal Button Siguiente Estado------------------------------------------- -->
-                                <div class="">
+                                <div >
                                     <a type="button" class="" data-bs-toggle="modal"
                                         th:attr="data-bs-target='#exampleModal'+${institucion.id_institucion}">
                                         <i class='bx bxs-chevrons-right'></i>
@@ -138,31 +158,31 @@
                                 <!-- ---------------------------------Validacion Estado "Localizado"------------------------------------------- -->
                                 <div class="modal fade" th:id="${'exampleModal'+{institucion.id_institucion}}"
                                     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-                                    th:if="${institucion.estado.nombre == 'Localizado'}">
+                                    th:if="${institucion.estado.id_estado == 1}">
                                     <div class="modal-dialog">
                                         <form action="#" class="needs-validation" novalidate
-                                            th:action="@{/informes/tiempoContacto}" method="post"
+                                            th:action="@{/reports/contactTime}" method="post"
                                             th:object="${institucion}">
                                             <input type="hidden" name="id_institucion" th:value="*{id_institucion}">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel"
-                                                        th:text="${institucion.nombre}"></h5>
+                                                    <h4 class="modal-title text-primary" id="exampleModalLabel">Located condition validation</h4>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="inputs">
-                                                        <p th:text="${institucion.nombre}"></p>
-                                                        <label for="horaContacto" class="form-label">Fecha y hora de
-                                                            contacto:</label>
+                                                        <strong class="" th:text="${'Institution name: ' + institucion.nombre}"></strong>
+                                                        <br>
+                                                        <br>
+                                                        <label for="horaContacto" class="form-label text-secondary">Enter date and time of contact:</label>
                                                         <input type="datetime-local" class="form-control"
-                                                            name="tiempo_contacto" min="2022-10-19T00:00" required>
+                                                            name="tiempo_contacto" min="2022-10-26T00:00" required>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-primary"
-                                                        data-bs-dismiss="modal">Save</button>
+                                                        data-bs-dismiss="modal">Next Condition</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -171,31 +191,30 @@
                                 <!-- ---------------------------------Validacion Estado "Contactado"------------------------------------------- -->
                                 <div class="modal fade" th:id="${'exampleModal'+{institucion.id_institucion}}"
                                     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-                                    th:if="${institucion.estado.nombre == 'Contactado'}">
+                                    th:if="${institucion.estado.id_estado == 2}">
                                     <div class="modal-dialog">
                                         <form action="#" class="needs-validation" novalidate
-                                            th:action="@{/informes/contactado}" method="post"
-                                            th:object="${institucion}">
+                                            th:action="@{/reports/contacted}" method="post" th:object="${institucion}">
                                             <input type="hidden" name="id_institucion" th:value="*{id_institucion}">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel"
-                                                        th:text="${institucion.nombre}"></h5>
+                                                    <h4 class="modal-title text-primary" id="exampleModalLabel">Contacted condition validation</h4>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="inputs">
-                                                        <p th:text="${institucion.nombre}"></p>
+                                                        <strong class="" th:text="${'Institution name: ' + institucion.nombre}"></strong>
+                                                        <br>
+                                                        <br>
                                                         <input class="form-check-input col-12" type="checkbox"
                                                             role="checkbox" name="Contactado" required>
-                                                        <label for="Contactado" class="form-label">Se contacto la
-                                                            institucion ?</label>
+                                                        <label for="Contactado" class="form-label">Was the institution contacted?</label>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-primary"
-                                                        data-bs-dismiss="modal">Siguiente Estado</button>
+                                                        data-bs-dismiss="modal">Next Condition</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -204,29 +223,30 @@
                                 <!-- ---------------------------------Validacion Estado Reuniones------------------------------------------- -->
                                 <div class="modal fade" th:id="${'exampleModal'+{institucion.id_institucion}}"
                                     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-                                    th:if="${institucion.estado.nombre == 'Reunión a programar' || institucion.estado.nombre == 'Reunión de consulta'}">
+                                    th:if="${institucion.estado.id_estado == 3 || institucion.estado.id_estado == 4}">
                                     <div class="modal-dialog">
                                         <form action="#" class="needs-validation" novalidate
-                                            th:action="@{/informes/reunion}" method="post" th:object="${institucion}">
+                                            th:action="@{/reports/meet}" method="post" th:object="${institucion}">
                                             <input type="hidden" name="id_institucion" th:value="*{id_institucion}">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel"
-                                                        th:text="${institucion.nombre}"></h5>
+                                                    <h4 class="modal-title text-primary" id="exampleModalLabel">Meeting condition validation</h4>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="inputs">
-                                                        <label for="horaContacto" class="form-label">Hora de
-                                                            Reunion:</label>
+                                                        <strong class="" th:text="${'Institution name: ' + institucion.nombre}"></strong>
+                                                        <br>
+                                                        <br>
+                                                        <label for="horaContacto" class="form-label text-secondary">Date and time the meeting was held:</label>
                                                         <input type="datetime-local" class="form-control"
-                                                            name="reuniones" required min="2022-10-20T00:00" />
+                                                            name="reuniones" required min="2022-10-26T00:00" />
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-primary"
-                                                        data-bs-dismiss="modal">Siguiente Estado</button>
+                                                        data-bs-dismiss="modal">Next Condition</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -235,43 +255,48 @@
                                 <!-- ---------------------------------Validacion Estado "A Inscribirse"------------------------------------------- -->
                                 <div class="modal fade" th:id="${'exampleModal'+{institucion.id_institucion}}"
                                     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-                                    th:if="${institucion.estado.nombre == 'A inscribirse'}">
+                                    th:if="${institucion.estado.id_estado == 5}">
                                     <div class="modal-dialog">
                                         <form action="#" class="needs-validation" novalidate
-                                            th:action="@{/informes/tiempoContacto}" method="post"
+                                            th:action="@{/reports/inscription}" method="post"
                                             th:object="${institucion}">
                                             <input type="hidden" name="id_institucion" th:value="*{id_institucion}">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" th:text="${institucion.nombre}"
-                                                        id="exampleModalLabel"></h5>
+                                                    <h4 class="modal-title text-primary" id="exampleModalLabel">Registration condition validation</h4>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="inputs">
-                                                        <label for="altaInstitucion" class="form-label"> Link de
-                                                            inscripcion de:</label>
-                                                        <a href="#"
-                                                            th:href="@{/institucion/editar/} +${institucion.id_institucion}"><input
-                                                                type="text" class="form-control" name="altaInstitucion"
-                                                                th:value="${institucion.nombre}" disabled></a>
+                                                        <small class="alert alert-warning p-1" role="alert">
+                                                            Copy and send the following link to the institution!
+                                                        </small>
+                                                        <br>
+                                                        <label for="altaInstitucion" class="form-label text-secondary"> Registration link of:</label>
+                                                        <a class="w-75"
+                                                            th:href="@{/institutions/editInstitution/} +${institucion.id_institucion}"
+                                                            th:target="_blank" name="altaInstitucion">
+                                                            <input type="text" class="form-control w-75 text-center"
+                                                                name="altaInstitucion" th:value="${institucion.nombre}"
+                                                                disabled>
+                                                        </a>
                                                     </div>
+
                                                 </div>
-                                                <!-- <div class="modal-footer">
+                                                <div class="modal-footer">
                                                     <button type="submit" class="btn btn-primary"
-                                                        data-bs-dismiss="modal"
-                                                        th:href="@{/informes/siguienteEstado/}+${institucion.id_institucion}">Finish</button>
-                                                </div> -->
+                                                        data-bs-dismiss="modal">Finish</button>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
 
                                 <!-- ---------------------------------Fin Modal Button Siguiente Estado------------------------------------------- -->
-                                </td>
-                            <td class="action">
-                                <a th:href="@{/informes/editar/}+${institucion.id_institucion}"><i
+                            </td>
+                            <td class="action" sec:authorize="hasAnyRole('ROLE_ADMINISTRADOR','VENTAS','RECLUTADOR' )">
+                                <a th:href="@{/reports/editReport/}+${institucion.id_institucion}"><i
                                         class="bx bx-edit"></i></a>
                                 <a data-bs-toggle="modal"
                                     th:attr="data-bs-target='#eliminarInforme'+${institucion.id_institucion}"><i
@@ -284,8 +309,7 @@
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="eliminarInforme">Desea eliminar al
-                                                    informe de: <Strong><span
+                                                <h1 class="modal-title fs-5" id="eliminarInforme">Delete report of <Strong><span
                                                             th:text="${institucion.nombre}"></span></Strong></h1>
                                             </div>
                                             <div class="modal-body">
@@ -294,8 +318,10 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer justify-content-center">
-                                                <a th:href="@{/informes/eliminar/}+${institucion.id_institucion}">
-                                                    <button type="button" class="btn btn-primary">Confirmar</button></a>
+                                                <a th:href="@{/reports}">
+                                                    <button type="button" class="btn btn-secondary">Cancel</button></a>
+                                                <a th:href="@{/reports/deleteReport/}+${institucion.id_institucion}">
+                                                    <button type="button" class="btn btn-primary">Confirm</button></a>
                                             </div>
                                         </div>
                                     </div>
@@ -349,6 +375,8 @@
             })
         })()
     </script>
+
+    <script src="script.js"></script>
 
 
 </body>

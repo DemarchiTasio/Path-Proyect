@@ -14,12 +14,17 @@ html,body{
     width: 8rem;
 }
 
+.top-bar{
+    background-color: #004969;
+    height: 2rem;
+    width: 100%;
+}
 .side-navbar{
     width: 8rem;
 }
 
 .nav-item a:hover {
-    padding: 10px;
+    padding-left: 10px;
     cursor: pointer;
 }
 
@@ -71,3 +76,4 @@ html,body{
 #alumnTabel{
     visibility: hidden;
 }
+

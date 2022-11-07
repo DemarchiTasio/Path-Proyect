@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.Manager.pathExamination.Model.Alumno;
+import com.Manager.pathExamination.Model.Examen;
+import com.Manager.pathExamination.Model.Institucion;
 import com.Manager.pathExamination.Repository.AlumnoRepository;
 import com.Manager.pathExamination.Service.AlumnoService;
-import com.Manager.pathExamination.model.Alumno;
+import com.Manager.pathExamination.Service.ExamenService;
 
 @Service
 public class AlumnoServiceImpl implements AlumnoService {
@@ -16,12 +19,15 @@ public class AlumnoServiceImpl implements AlumnoService {
     @Autowired
     private AlumnoRepository alumnoRepository;
 
+    @Autowired
+    private ExamenService examenService;
+
     @Override
-    @Transactional
+    // @Transactional
     public void saveAlumno(Alumno a) {
         alumnoRepository.save(a);
-        
-    }
+        }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -43,6 +49,22 @@ public class AlumnoServiceImpl implements AlumnoService {
         Alumno a = findByIdAlumno(id);
         a.setVisibilidad(true);
         
+    }
+
+
+    @Override
+    public void setInstitucion(Institucion i, Alumno a) {
+        
+        a.setInstitucion(i);
+        
+    }
+
+
+    @Override
+    public void setDatos(Alumno a) {
+       
+        a.setSet_info(true);
+        alumnoRepository.save(a);
     }
     
 }

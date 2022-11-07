@@ -1,11 +1,10 @@
 package com.Manager.pathExamination.Repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.Manager.pathExamination.model.Usuario;
+import com.Manager.pathExamination.Model.Usuario;
 
-@Repository
-public interface UsuarioRepository extends CrudRepository<Usuario, Integer> {
-    
+
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+    Usuario findByUsername(String username);
 }

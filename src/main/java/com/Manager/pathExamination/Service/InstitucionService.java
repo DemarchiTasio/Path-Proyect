@@ -2,7 +2,7 @@ package com.Manager.pathExamination.Service;
 
 import java.util.List;
 
-import com.Manager.pathExamination.model.Institucion;
+import com.Manager.pathExamination.Model.Institucion;
 
 public interface InstitucionService {
 
@@ -18,4 +18,5 @@ public interface InstitucionService {
     public void setReunion(int id, String dateTime);
     public void setContactado(int id);
     public void setContrato(Institucion i);
+
 }

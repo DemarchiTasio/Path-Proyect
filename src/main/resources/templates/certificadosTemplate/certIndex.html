@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <title>Lista Informe</title>
+
+</head>
+
+<body>
+    <div class="grid-container w-100 d-flex justify-content-center">
+
+        <!-- ---------------------------------NavBar------------------------------------------- -->
+
+        <nav class="navbar navbar-dark fixed-top">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="w-25 offcanvas side-navbar offcanvas-start" tabindex="-1" id="offcanvasDarkNavbar"
+                    aria-labelledby="offcanvasDarkNavbarLabel">
+                    <div class="offcanvas-header d-flex justify-content-center">
+                        <img class="logo-img" src="LogoPath.jpg" alt="">
+                        <button type="button" class="btn-close position-absolute top-0 end-0 m-3 btn-close-black"
+                            data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="canvas-body mt-2">
+                        <ul class="navbar-nav d-flex justify-content-end flex-grow-1 ms-4">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/reports}">
+                                    <i class="bx bxs-report"></i>
+                                    <span class="link-name">Reports</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" th:href="@{/institutions}">
+                                    <i class="bx bxs-school"></i>
+                                    <span class="link-name">Institutions</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" th:href="@{/students}">
+                                    <i class="bx bxs-graduation"></i>
+                                    <span class="link-name">Student</span>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-dark fs-5 dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-book"></i>
+                                    <span class="link-name">Exams</span>
+                                </a>
+                                <ul class="dropdown-menu border-0 ms-3">
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/exams}">
+                                            <i class='bx bxs-pencil pe-2'></i>
+                                            Exam Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/dayOfExams}">
+                                            <i class='bx bx-calendar-star pe-2'></i>Day of Exams
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" th:href="@{/certificates}">
+                                    <i class='fas fa-award'></i>
+                                    <span class="link-name">Certificates</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
+                                <a class="nav-link text-dark fs-5" th:href="@{/users}">
+                                    <i class='bx bxs-user-detail'></i>
+                                    <span class="link-name">Users Management</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" th:href="@{/charts}">
+                                    <i class='bx bx-bar-chart-alt'></i>
+                                    <span class="link-name">Statistics</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="navbar" class="nav-item d-flex align-items-end h-100">
+                        <form th:action="@{/logout}" method="post">
+                            <a class="nav-link text-dark mb-3 ms-2 fs-5" href="#" onclick="this.parentNode.submit();">
+                                <i class='bx bx-exit'></i>
+                                    <span class="link-name">Logout</span>
+                                </a>
+                        </form>
+                    </div>
+                </div>
+        </nav>
+
+        <!-- ---------------------------------Center Container------------------------------------------- -->
+        <div class="center d-flex justify-content-center">
+            <div class="table-content p-3 rounded-2">
+
+                <!-- ---------------------------------Tabla Informes------------------------------------------- -->
+
+                <table id="informeTable" class="display mb-2" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Student Name</th>
+                            <th>Student Surname</th>
+                            <th>Student DNI</th>
+                            <th>Email</th>
+                            <th>Module</th>
+                            <th>Exam level</th>
+                            <th>Test score</th>
+                            <th>Condition</th>
+                            <th>Next <br>
+                                Condition</th>
+                            <!-- <th>Action</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each=" certificado: ${listCertificados}" th:if="${certificado.estado != null && certificado.alumno.visibilidad != true}">
+                            <td th:text="${certificado.id_examen}"></td>
+                            <td th:text="${certificado.alumno.nombre}"></td>
+                            <td th:text="${certificado.alumno.apellido}"></td>
+                            <td th:text="${certificado.alumno.documento}"></td>
+                            <td th:text="${certificado.alumno.email}"></td>
+                            <td th:text="${certificado.modulo}"></td>
+                            <td th:text="${certificado.nivel_examinar}"></td>
+                            <td>
+                                <span th:text="${certificado.nota}"></span>
+                                <a th:if="${certificado.nota != 0}" type="button" class="fs-6" data-bs-toggle="modal"
+                                    th:attr="data-bs-target='#editNota'+${certificado.id_examen}">
+                                    <i class="bx bx-edit"></i>
+                                </a>
+                                <div class="modal fade" th:id="${'editNota'+{certificado.id_examen}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <form action="#" th:action="@{/certificate/setNota}" method="post"
+                                            th:object="${certificado}" class="needs-validation" novalidate>
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"
+                                                        th:text="${'Exam of: '+certificado.alumno.nombre}"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            The text score will be changed.
+                                                        </div>
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-auto">
+                                                                <label for="nota" class="col-form-label">Enter the test score:</label>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <input type="number" name="nota" id="nota"
+                                                                    class="form-control" max="10" min="1"
+                                                                    aria-describedby="passwordHelpInline">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Save</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                            <td th:text="${certificado.estado.nombre}"></td>
+                            <td class="action d-flex justify-content-center">
+
+                                <!-- ---------------------------------Modal Button Siguiente Estado------------------------------------------- -->
+                                <div th:if="${certificado.estado.id_estado < 13}">
+                                    <a type="button" data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#exampleModal'+${certificado.id_examen}">
+                                        <i class='bx bxs-chevrons-right'></i>
+                                    </a>
+                                </div>
+                                <!-- ---------------------------------Validacion Estado "Localizado"------------------------------------------- -->
+                                <div class="modal fade" th:id="${'exampleModal'+{certificado.id_examen}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                    th:if="${certificado.estado.nombre == 'Entregado en oficina'}">
+                                    <div class="modal-dialog">
+                                        <form action="#" th:action="@{/certificate/nextState}" method="post"
+                                            th:object="${certificado}" class="needs-validation" novalidate>
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"><span th:text="${'Exam of: '+certificado.alumno.nombre}"></span></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            Sure you want to move the Certificate to the status "Enviado a
+                                                            Inglaterra" ?
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Continue</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- ---------------------------------Validacion Estado "Contactado"------------------------------------------- -->
+                                <div class="modal fade" th:id="${'exampleModal'+{certificado.id_examen}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                    th:if="${certificado.estado.nombre == 'Enviado a Inglaterra'}">
+                                    <div class="modal-dialog">
+                                        <form action="#" th:action="@{/certificate/nextState}" method="post"
+                                            th:object="${certificado}" class="needs-validation" novalidate>
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"
+                                                        th:text="${'Exam of: '+certificado.alumno.nombre}"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            Sure you want to pass the Certificate to the status "Ultimo
+                                                            trayecto hacia la oficina de Inglaterra" ?
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Continue</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- ---------------------------------Validacion Estado Reuniones------------------------------------------- -->
+                                <div class="modal fade" th:id="${'exampleModal'+{certificado.id_examen}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                    th:if="${certificado.estado.nombre == 'Ultimo trayecto hacia la oficina de Inglaterra'}">
+                                    <div class="modal-dialog">
+                                        <form action="#" th:action="@{/certificate/nextState}" method="post"
+                                            th:object="${certificado}" class="needs-validation" novalidate>
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"
+                                                        th:text="${'Exam of: '+certificado.alumno.nombre}"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            Sure you want to move the Certificate to the status "En
+                                                            corrección" ?
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Continue</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- ---------------------------------Validacion Estado "A Inscribirse"------------------------------------------- -->
+                                <div class="modal fade" th:id="${'exampleModal'+{certificado.id_examen}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                    th:if="${certificado.estado.nombre == 'En corrección'}">
+                                    <div class="modal-dialog">
+                                        <form action="#" th:action="@{/certificate/setNota}" method="post"
+                                            th:object="${certificado}" class="needs-validation" novalidate>
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"
+                                                        th:text="${'Exam of: '+certificado.alumno.nombre}"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            Sure you want to move the Certificate to the "Corregido" status ?
+                                                        </div>
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-auto">
+                                                                <label for="nota" class="col-form-label">Enter the test score:</label>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <input type="number" name="nota" id="nota"
+                                                                    class="form-control" min="1" max="10"
+                                                                    aria-describedby="passwordHelpInline" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Continue</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- ---------------------------------Validacion Estado "A Inscribirse"------------------------------------------- -->
+                                <div class="modal fade" th:id="${'exampleModal'+{certificado.id_examen}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                    th:if="${certificado.estado.nombre == 'Corregido'}">
+                                    <div class="modal-dialog">
+                                        <form action="#" th:action="@{/certificate/nextState}" method="post"
+                                            th:object="${certificado}" class="needs-validation" novalidate>
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"
+                                                        th:text="${'Exam of: '+certificado.alumno.nombre}"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            Sure you want to move the Certificate to the status "En camino" ?
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Continue</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- ---------------------------------Validacion Estado "A Inscribirse"------------------------------------------- -->
+                                <div class="modal fade" th:id="${'exampleModal'+{certificado.id_examen}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                    th:if="${certificado.estado.nombre == 'En camino'}">
+                                    <div class="modal-dialog">
+                                        <form action="#" th:action="@{/certificate/nextState}" method="post"
+                                            th:object="${certificado}" class="needs-validation" novalidate>
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"
+                                                        th:text="${'Exam of: '+certificado.alumno.nombre}"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            Sure you want to move the Certificate to the status "En último
+                                                            trayecto" ?
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Continue</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- ---------------------------------Validacion Estado "A Inscribirse"------------------------------------------- -->
+                                <div class="modal fade" th:id="${'exampleModal'+{certificado.id_examen}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                    th:if="${certificado.estado.nombre == 'En último trayecto'}">
+                                    <div class="modal-dialog">
+                                        <form action="#" th:action="@{/certificate/nextState}" method="post"
+                                            th:object="${certificado}" class="needs-validation" novalidate>
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"
+                                                        th:text="${'Exam of: '+certificado.alumno.nombre}"></h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            Surely you want to put the Certificate in the status"Espera de entrega" ?
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Continue</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div th:if="${certificado.estado.id_estado == 13}" class="btn-entregado">
+                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#Entregado'+${certificado.id_examen}"
+                                        type="submit">Delivered</button>
+                                </div>
+                                <div class="modal fade" th:id="${'Entregado'+{certificado.id_examen}}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <form action="#" th:action="@{/certificate/setDelivered}" method="post"
+                                            th:object="${certificado}" class="needs-validation" novalidate>
+                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">
+                                                        Certificate Delivery</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="inputs">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            Was the certificate delivered to the student:
+                                                            <span
+                                                                th:text="${certificado.alumno.nombre +' '+ certificado.alumno.apellido}"></span>
+                                                            <br>
+                                                            <span
+                                                                th:text="${' DNI: '+certificado.alumno.documento}"> ?</span>
+                                                        </div>
+                                                        <input class="form-check-input col-12" type="checkbox"
+                                                            role="checkbox" name="Contactado" required>
+                                                        <label for="Contactado" class="form-label">The certificate was delivered correctly.</label>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary"
+                                                        data-bs-dismiss="modal">Save</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- ---------------------------------Fin Modal Button Siguiente Estado------------------------------------------- -->
+                            </td>
+                        </tr>
+                </table>
+
+                <!-- ---------------------------------Fin Tabla Informe------------------------------------------- -->
+
+            </div>
+        </div>
+
+        <!-- ---------------------------------Fin Center Container------------------------------------------- -->
+
+    </div>
+
+
+
+    <!-- ---------------------------------Script Boostrap------------------------------------------- -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+
+    <!-- ---------------------------------Script Tabla------------------------------------------- -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#informeTable').DataTable();
+        });</script>
+
+    <!-- ---------------------------------Script Validacion de Campos------------------------------------------- -->
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+
+
+</body>
+
+</html>

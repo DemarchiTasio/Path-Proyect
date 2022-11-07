@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmls:sec="">
 
 <head>
     <meta charset="UTF-8">
@@ -36,58 +36,75 @@
                             data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="canvas-body mt-2">
-                        <ul class="navbar-nav justify-content-end flex-grow-1 ms-4">
+                        <ul class="navbar-nav d-flex justify-content-end flex-grow-1 ms-4">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/informes}">
+                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/reports}">
                                     <i class="bx bxs-report"></i>
-                                    <span class="link-name">Informes</span>
+                                    <span class="link-name">Reports</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/instituciones}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/institutions}">
                                     <i class="bx bxs-school"></i>
                                     <span class="link-name">Institutions</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/alumnos}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/students}">
                                     <i class="bx bxs-graduation"></i>
                                     <span class="link-name">Student</span>
                                 </a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
-                                    <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
-                                </a>
-                            </li> -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link text-dark fs-5 dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
+                                    <span class="link-name">Exams</span>
                                 </a>
                                 <ul class="dropdown-menu border-0 ms-3">
-                                    <li><a class="dropdown-item" th:href="@{/examenes}"><i
-                                                class='bx bxs-pencil pe-2'></i>Gestion de
-                                            Examen</a></li>
-                                    <li><a class="dropdown-item" th:href="@{/examenesDay}"> <i
-                                                class='bx bx-calendar-star pe-2'></i>Dia
-                                            de Examen</a></li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/exams}">
+                                            <i class='bx bxs-pencil pe-2'></i>
+                                            Exam Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/dayOfExams}">
+                                            <i class='bx bx-calendar-star pe-2'></i>Day of Exams
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
+                                <a class="nav-link text-dark fs-5" th:href="@{/certificates}">
                                     <i class='fas fa-award'></i>
-                                    <span class="link-name">Certification</span>
+                                    <span class="link-name">Certificates</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
+                                <a class="nav-link text-dark fs-5" th:href="@{/users}">
+                                    <i class='bx bxs-user-detail'></i>
+                                    <span class="link-name">Users Management</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" th:href="@{/charts}">
+                                    <i class='bx bx-bar-chart-alt'></i>
+                                    <span class="link-name">Statistics</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                    <div id="navbar" class="nav-item d-flex align-items-end h-100">
+                        <form th:action="@{/logout}" method="post">
+                            <a class="nav-link text-dark mb-3 ms-2 fs-5" href="#" onclick="this.parentNode.submit();">
+                                <i class='bx bx-exit'></i>
+                                    <span class="link-name">Logout</span>
+                                </a>
+                        </form>
+                    </div>
                 </div>
-            </div>
         </nav>
-
         <!-- ---------------------------------Center Container------------------------------------------- -->
 
         <div id="alumnTabel" class="center d-flex justify-content-center visible">
@@ -101,83 +118,83 @@
                     <thead>
                         <tr>
                             <!-- <th>#</th> -->
-                            <th>Nombre</th>
-                            <th>Apellido</th>
+                            <th>Student Name</th>
+                            <th>Student Surname</th>
                             <!-- <th>Nacimiento</th> -->
                             <th>DNI</th>
                             <th>Email</th>
                             <!-- <th >Institucion a <br> Presentarse</th> -->
-                            <th>Localidad</th>
-                            <th>Telefono</th>
-                            <th>Nivel a Examinar</th>
-                            <th>Modulo</th>
-                            <th>Institucion a <br> presentarse</th>
+                            <th>Location</th>
+                            <th>Phone number</th>
+                            <th>Exam level</th>
+                            <th>Moduel</th>
+                            <th sec:authorize="hasAnyRole('ORGANIZADOR','ADMINISTRADOR')">Institution <br> to attend
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each=" examen: ${examenes}" th:if="${examen.alumno.visibilidad != true}">
-                            <!-- <td th:text="${iter.index}"></td> -->
                             <td th:text="${examen.alumno.nombre}"></td>
                             <td th:text="${examen.alumno.apellido}"></td>
-                            <!-- <td th:text="${alumno.fecha_nacimiento}"></td> -->
                             <td th:text="${examen.alumno.documento}"></td>
                             <td th:text="${examen.alumno.email}"></td>
-                            <!-- <td th:if="${examen.institucion != null}" th:text="${examen.institucion.nombre}"></td> -->
                             <td th:text="${examen.alumno.localidad}"></td>
                             <td th:text="${examen.alumno.telefono}"></td>
-                            <td th:text="${examen.alumno.nivel_examinar}"></td>
-                            <td th:text="${examen.alumno.modulo}"></td>
-                            <td class="d-flex justify-content-center">
-                                <!-- Button trigger modal -->
+                            <td th:text="${examen.nivel_examinar}"></td>
+                            <td th:text="${examen.modulo}"></td>
+                            <td sec:authorize="hasAnyRole('ORGANIZADOR','ADMINISTRADOR')"
+                                class="d-flex justify-content-center">
                                 <div th:if="${examen.institucion == null}">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         th:attr="data-bs-target='#exampleModal'+${examen.id_examen}"
                                         th:disabled="${examen.institucion != null}">
-                                        <!-- <i class='bx bx-edit-alt p-0 m-0'></i> -->
                                         <i class='bx bxs-school p-0 m-0'></i>
-                                        Asignar
+                                        To assign
                                     </button>
                                 </div>
                                 <div th:if="${examen.institucion != null}">
-                                   <strong><p th:text="${examen.institucion.nombre}" class="text-primary"></p></strong> 
+                                    <strong>
+                                        <p th:text="${examen.institucion.nombre}"
+                                            class="text-primary align-content-center"></p>
+                                    </strong>
                                 </div>
-                                <!-- Modal -->
                                 <div class="modal fade" th:id="${'exampleModal'+{examen.id_examen}}" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
-                                        <form action="#" class="needs-validation" novalidate
-                                            th:action="@{/examenes/institucion}" method="post" th:object="${examen}">
-                                            <input type="hidden" name="id_examen" th:value="*{id_examen}">
-                                            <div class="modal-content">
+
+                                        <div class="modal-content">
+                                            <form action="#" class="needs-validation" novalidate
+                                                th:action="@{/exams/institution}" method="post" th:object="${examen}">
+                                                <input type="hidden" name="id_examen" th:value="*{id_examen}">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLabel"
-                                                        th:text="${examen.alumno.nombre}"></h5>
+                                                        th:text="${'Student: '+ examen.alumno.nombre +' '+examen.alumno.apellido}"></h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="inputs">
-                                                        <label for="setInstitucion" class="form-label">Set
-                                                            institucion:</label>
-                                                        <select name="setInstitucion" class="form-select"
-                                                            aria-label="Default select example">
+                                                        <label for="setInstitucion" class="form-label text-secondary">Select institution to assign:</label>
+                                                        <select name="id_institucion" th:name="id_institucion"
+                                                            class="form-select" aria-label="Default select example">
                                                             <option th:each=" inst : ${instituciones}"
-                                                                th:value="${inst.id_institucion}"
-                                                                th:if="${inst.visibilidad != true && inst.contrato != false}"
+                                                                name="id_institucion" th:value="${inst.id_institucion}"
+                                                                th:if="${inst.tipo_contrato == 'Centro Examinador' && inst.visibilidad != true}"
                                                                 th:text="${inst.nombre}"></option>
                                                         </select>
                                                     </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary"
+                                                            data-bs-dismiss="modal">Assign Institution</button>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary"
-                                                        data-bs-dismiss="modal">Asignar Institución</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

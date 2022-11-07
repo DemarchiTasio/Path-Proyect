@@ -1,19 +1,25 @@
 package com.Manager.pathExamination.Service;
 
+
 import java.util.List;
 
-import com.Manager.pathExamination.model.Alumno;
-import com.Manager.pathExamination.model.Examen;
-import com.Manager.pathExamination.model.Institucion;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.Manager.pathExamination.Model.Examen;
+import com.Manager.pathExamination.Model.Institucion;
+import com.Manager.pathExamination.Repository.ExamenRepository;
 
 
 public interface ExamenService {
-    
-    public void saveExamen(Examen e);
-    public void asignarAlumno(Alumno a);
-    public List<Examen> examenList();
-    public List<Institucion> filtrarInstitucion(Examen e);
-    public void setInstitucion(int id, int i);
-    public void setAsistencia(int id, boolean asistencia);
 
+    public void saveExamen(Examen e);
+    public List<Examen> listExamen();
+    public Examen findExamenById(int id);
+    public void asigneInstitution(int id, Examen e);
+    public void setInstitucion(Institucion i, Examen e);
+    public void setAsistencia(int id);
+    public void setEstado();
+    public void setEstadoSiguiente(Examen i);
+    public void setNota(Examen e, float nota);
+    public void setEntrega(Examen e);
 }

@@ -9,6 +9,7 @@
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <title>Formulario Institucion</title>
 </head>
 </head>
@@ -30,78 +31,99 @@
                             data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="canvas-body mt-2">
-                        <ul class="navbar-nav justify-content-end flex-grow-1 ms-4">
+                        <ul class="navbar-nav d-flex justify-content-end flex-grow-1 ms-4">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/informes}">
+                                <a class="nav-link text-dark fs-5" aria-current="page" th:href="@{/reports}">
                                     <i class="bx bxs-report"></i>
-                                    <span class="link-name">Informes</span>
+                                    <span class="link-name">Reports</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/instituciones}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/institutions}">
                                     <i class="bx bxs-school"></i>
                                     <span class="link-name">Institutions</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" th:href="@{/alumnos}">
+                                <a class="nav-link text-dark fs-5" th:href="@{/students}">
                                     <i class="bx bxs-graduation"></i>
                                     <span class="link-name">Student</span>
                                 </a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
-                                    <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
-                                </a>
-                            </li> -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link text-dark fs-5 dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-book"></i>
-                                    <span class="link-name">Exam</span>
+                                    <span class="link-name">Exams</span>
                                 </a>
                                 <ul class="dropdown-menu border-0 ms-3">
-                                    <li><a class="dropdown-item" th:href="@{/examenes}"><i class='bx bxs-pencil pe-2'></i>Gestion de
-                                            Examen</a></li>
-                                    <li><a class="dropdown-item" th:href="@{/examenesDay}"> <i class='bx bx-calendar-star pe-2'></i>Dia
-                                            de Examen</a></li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/exams}">
+                                            <i class='bx bxs-pencil pe-2'></i>
+                                            Exam Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/dayOfExams}">
+                                            <i class='bx bx-calendar-star pe-2'></i>Day of Exams
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" href="#">
+                                <a class="nav-link text-dark fs-5" th:href="@{/certificates}">
                                     <i class='fas fa-award'></i>
-                                    <span class="link-name">Certification</span>
+                                    <span class="link-name">Certificates</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRADOR')">
+                                <a class="nav-link text-dark fs-5" th:href="@{/users}">
+                                    <i class='bx bxs-user-detail'></i>
+                                    <span class="link-name">Users Management</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" th:href="@{/charts}">
+                                    <i class='bx bx-bar-chart-alt'></i>
+                                    <span class="link-name">Statistics</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                    <div id="navbar" class="nav-item d-flex align-items-end h-100">
+                        <form th:action="@{/logout}" method="post">
+                            <a class="nav-link text-dark mb-3 ms-2 fs-5" href="#" onclick="this.parentNode.submit();">
+                                <i class='bx bx-exit'></i>
+                                    <span class="link-name">Logout</span>
+                                </a>
+                        </form>
+                    </div>
                 </div>
-            </div>
         </nav>
 
         <!-- ---------------------------------Center Container------------------------------------------- -->
 
         <div class="center-form d-grid justify-content-center mb-3">
-            <h1 class="col-1 mb-4 d-flex justify-content-center w-100">Datos de la Institucion</h1>
+            <h1 class="col-1 mb-4 d-flex justify-content-center w-100">Institution Data</h1>
             <div>
 
                 <!-- ---------------------------------Form Institucion------------------------------------------- -->
 
                 <form action="#" class="row g-3 needs-validation" novalidate method="post"
-                    th:action="@{/instituciones/guardar}" th:object="${institucion}">
+                    th:action="@{/institutions/saveInstitution}" th:object="${institucion}">
                     <input type="hidden" name="id_institucion" th:field="*{id_institucion}">
                     <input type="hidden" name="estado" th:field="*{estado}">
                     <!-- ---------------------------------Inputs Group------------------------------------------- -->
                     <div class="col-6">
-                        <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" name="nombre" th:field="*{nombre}" class="form-control" maxlength="30" required>
+                        <label for="nombre" class="form-label">Institution name:</label>
+                        <input type="text" pattern="[A-z- ]{4,35}" name="nombre" th:field="*{nombre}" class="form-control" maxlength="30"
+                            required>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="tipo" class="form-label">Tipo:</label>
+                        <label for="tipo" class="form-label">Type:</label>
                         <select name="tipo" th:field="*{tipo}" class="form-control form-select" required>
                             <option th:value="Institución" th:text="Institución"></option>
                             <option th:value="Colegio" th:text="Colegio"></option>
@@ -110,7 +132,7 @@
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <label for="pais" class="form-label">Pais:</label>
+                        <label for="pais" class="form-label">Country:</label>
                         <select name="pais" th:field="*{pais}" class="form-select" required>
                             <option th:value="Argentina" th:text="Argentina" selected></option>
                             <option th:value="Chile" th:text="Chile"></option>
@@ -119,66 +141,73 @@
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <label for="provincia" class="form-label">Provincia:</label>
-                        <input type="text" class="form-control" name="provincia" placeholder="Buenos Aires"
+                        <label for="provincia" class="form-label">State:</label>
+                        <input type="text" pattern="[A-z- ]{4,35}" class="form-control" name="provincia" placeholder="Buenos Aires"
                             th:field="*{provincia}" maxlength="30" required>
                     </div>
                     <div class="col-md-4">
-                        <label for="ciudad" class="form-label">Ciudad:</label>
-                        <input type="text" class="form-control" name="ciudad" th:field="*{ciudad}" maxlength="30" required>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="localidad" class="form-label">Localidad:</label>
-                        <input type="text" class="form-control" name="localidad" th:field="*{localidad}" maxlength="30" required>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="direccion" class="form-label">Direccion:</label>
-                        <input type="text" class="form-control" name="direccion" th:field="*{direccion}" maxlength="30" required>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="codigo_postal" class="form-label">Codigo Postal:</label>
-                        <input type="text" class="form-control" name="codigo_postal" th:field="*{codigo_postal}" maxlength="30"
+                        <label for="ciudad" class="form-label">City:</label>
+                        <input type="text" pattern="[A-z- ]{4,25}" class="form-control" name="ciudad" th:field="*{ciudad}" maxlength="30"
                             required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="localidad" class="form-label">Location:</label>
+                        <input type="text" pattern="[A-z- ]{4,25}" class="form-control" name="localidad" th:field="*{localidad}" maxlength="30"
+                            required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="direccion" class="form-label">Direction:</label>
+                        <input type="text" class="form-control" name="direccion" th:field="*{direccion}" maxlength="30"
+                            required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="codigo_postal" class="form-label">Zip Code:</label>
+                        <input type="text" class="form-control" name="codigo_postal" th:field="*{codigo_postal}"
+                            maxlength="30" required>
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" th:field="*{email}" maxlength="30" required>
+                        <input type="email" class="form-control" name="email" th:field="*{email}" maxlength="30"
+                            required>
                     </div>
                     <div class="col-md-6">
-                        <label for="telefono" class="form-label">Telefono:</label>
-                        <input type="number" class="form-control" name="telefono" th:field="*{telefono}" maxlength="15"  required>
+                        <label for="telefono" class="form-label">Phone number:</label>
+                        <input type="number" class="form-control" name="telefono" th:field="*{telefono}" maxlength="15"
+                            required>
                     </div>
                     <div class="col-4">
                         <label for="facebook" class="form-label">Facebook:</label>
-                        <input type="text" name="facebook" th:field="*{facebook}" maxlength="60" class="form-control" >
+                        <input type="text" name="facebook" th:field="*{facebook}" maxlength="60" class="form-control">
                     </div>
                     <div class="col-4">
                         <label for="instagram" class="form-label">Instagram:</label>
-                        <input type="text" name="instagram" th:field="*{instagram}" maxlength="60" class="form-control" >
+                        <input type="text" name="instagram" th:field="*{instagram}" maxlength="60" class="form-control">
                     </div>
                     <div class="col-4">
-                        <label for="web" class="form-label">Pagina Web:</label>
-                        <input type="text" name="web" th:field="*{web}" maxlength="100" class="form-control" >
+                        <label for="web" class="form-label">Web page:</label>
+                        <input type="text" name="web" th:field="*{web}" maxlength="100" class="form-control">
                     </div>
                     <span class="placeholder col-12 placeholder-xs mt-5"></span>
-                    <h3 class="text-center">Datos del director</h3>
+                    <h3 class="text-center">Principal data</h3>
                     <div class="col-6">
-                        <label for="nombre_director" class="form-label">Nombre Director:</label>
-                        <input type="text" name="nombre_director" th:field="*{nombre_director}" maxlength="25" class="form-control" required>
+                        <label for="nombre_director" class="form-label">Principal's name:</label>
+                        <input type="text" pattern="[A-z- ]{4,25}" name="nombre_director" th:field="*{nombre_director}" maxlength="40"
+                            class="form-control" required>
                     </div>
                     <div class="col-6">
-                        <label for="apellido_director" class="form-label">Apellido Director:</label>
-                        <input type="text" name="apellido_director" th:field="*{apellido_director}" maxlength="25" class="form-control" required>
+                        <label for="apellido_director" class="form-label">Director's last name:</label>
+                        <input type="text" name="apellido_director" pattern="[A-z- ]{4,25}" th:field="*{apellido_director}" maxlength="25"
+                            class="form-control" required>
                     </div>
                     <div class="col-6">
-                        <label for="nacimiento_director" class="form-label">Fecha Nacimiento Director:</label>
-                        <input type="date" name="nacimiento_director" th:field="*{nacimiento_director}" class="form-control"
-                        max="2010-10-20" required>
+                        <label for="nacimiento_director" class="form-label">Date of Birth:</label>
+                        <input type="date" name="nacimiento_director" th:field="*{nacimiento_director}"
+                            class="form-control" max="2010-10-20" required>
                     </div>
                     <div class="col-6">
                         <label for="documento_director" class="form-label">DNI:</label>
-                        <input type="number" name="documento_director" th:field="*{documento_director}" maxlength="10" class="form-control"
-                            required>
+                        <input type="text" name="documento_director" th:field="*{documento_director}" pattern="[0-9]{7,11}"
+                            class="form-control" required>
                     </div>
 
                     <!-- ---------------------------------Separador------------------------------------------- -->
@@ -187,52 +216,45 @@
 
                     <!-- ---------------------------------Tipo Institucion Inputs Group------------------------------------------- -->
 
-                    <h3 class="text-center">Tipo de Centro</h3>
-                    <p class="fw-semibold">Seleccione que tipo de centro desea inscribir.</p>
+                    <h3 class="text-center">Center Type</h3>
+                    <p class="fw-semibold">Select what type of center you want to enroll..</p>
                     <div class="col-6">
-                        <input class="form-check-input col-12" type="checkbox" value="Centro Examinador" th:field="*{tipo_contrato}" id="centroExaminador"
-                            data-bs-toggle="collapse" href="#collapseExaminador" role="checkbox" aria-expanded="false"
-                            aria-controls="collapseExaminador">
-                        <label for="centroExaminador" class="form-label"> <b>Es centro examinador.</b></label>
+                        <input class="form-check-input col-12" type="checkbox" value="Centro Examinador"
+                            th:field="*{tipo_contrato}" id="centroExaminador" data-bs-toggle="collapse"
+                            href="#collapseExaminador" role="checkbox" aria-expanded="false"
+                            aria-controls="collapseExaminador" unchecked>
+                        <label for="centroExaminador" class="form-label"> <b>It is an examination center.</b></label>
                         <div class="collapse" id="collapseExaminador">
                             <div class="card card-body">
                                 <div class="col-6">
-                                    <label for="personal_disponible" class="form-label">Personal disponible para el dia
-                                        de examen:</label>
-                                    <input type="number" name="personal_disponible" th:field="*{personal_disponible}"
-                                        class="form-control" maxlength="3">
+                                    <label for="personal_disponible" class="form-label">Staff available for exam day:</label>
+                                    <input type="number"  name="personal_disponible" th:field="*{personal_disponible}" class="form-control" max="100">
                                 </div>
                                 <div class="col-6">
-                                    <label for="cant_aulas" class="form-label">Cantidad de aulas disponibles para el dia
-                                        de examen:</label>
-                                    <input type="number" name="cant_aulas" th:field="*{cant_aulas}"
-                                        class="form-control" maxlength="3">
-                                </div>
                                 <div class="col-6">
-                                    <label for="alumnos_aula" class="form-label">Cantidad de alumnos por aula:</label>
+                                    <label for="alumnos_aula" class="form-label">Number of classrooms available for the exam day:</label>
                                     <input type="number" name="alumnos_aula" th:field="*{alumnos_aula}"
-                                        class="form-control" maxlength="3">
+                                        class="form-control" max="50">
                                 </div>
                                 <div class="col-6">
-                                    <label for="cant_baños" class="form-label">Cantidad de baños:</label>
-                                    <input type="number" name="cant_baños" th:field="*{cant_baños}"
-                                        class="form-control" maxlength="3">
+                                    <label for="cant_baños" class="form-label">Number of bathrooms:</label>
+                                    <input type="number"  name="cant_baños" th:field="*{cant_baños}" class="form-control"
+                                        max="30">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <input class="form-check-input" type="checkbox" value="Instituto Afiliado" id="institutoAfiliado"
-                            data-bs-toggle="collapse" href="#collapseAfiliado" role="checkbox" th:field="*{tipo_contrato}" aria-expanded="false"
-                            aria-controls="collapseAfiliado">
-                        <label for="institutoAfiliado" class="form-label"> <b>Es instituto afiliado.</b></label>
+                        <input class="form-check-input" type="checkbox" value="Instituto Afiliado"
+                            id="institutoAfiliado" data-bs-toggle="collapse" href="#collapseAfiliado" role="checkbox"
+                            th:field="*{tipo_contrato}" aria-expanded="false" aria-controls="collapseAfiliado">
+                        <label for="institutoAfiliado" class="form-label"> <b>It is affiliated institute.</b></label>
                         <div class="collapse" id="collapseAfiliado">
                             <div class="card card-body">
                                 <div class="col-6">
-                                    <label for="cant_alumnos_inscribirse" class="form-label">Cantidad de alumnos estimada por
-                                        año:</label>
-                                    <input type="number" name="cant_alumnos_inscribirse" th:field="*{cant_alumnos_inscribirse}"
-                                        class="form-control" maxlength="3">
+                                    <label for="cant_alumnos_inscribirse" class="form-label">Estimated number of students per year:</label>
+                                    <input type="number" name="cant_alumnos_inscribirse"
+                                        th:field="*{cant_alumnos_inscribirse}" class="form-control" max="100">
                                 </div>
                             </div>
                         </div>
@@ -241,9 +263,9 @@
                     <!-- ---------------------------------Fin Inputs Group------------------------------------------- -->
 
                     <div class="d-flex justify-content-center gap-2">
-                        <a class="w-25" th:href="@{/instituciones}"><button type="button" name="cancelar"
-                                value="Cancelar" class="btn btn-secondary w-100">Cancelar</button></a>
-                        <button type="submit" class="btn btn-primary w-25">Guardar</button>
+                        <a class="w-25" th:href="@{/institutions}"><button type="button" name="cancelar"
+                                value="Cancelar" class="btn btn-secondary w-100">Cancel</button></a>
+                        <button type="submit" class="btn btn-primary w-25">Save</button>
                     </div>
                 </form>
             </div>
@@ -259,7 +281,7 @@
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         crossorigin="anonymous"></script>
 
-        <!-- ---------------------------------Script Validacion Componentes------------------------------------------ -->
+    <!-- ---------------------------------Script Validacion Componentes------------------------------------------ -->
 
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields

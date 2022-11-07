@@ -1,4 +1,4 @@
-package com.Manager.pathExamination.model;
+package com.Manager.pathExamination.Model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
