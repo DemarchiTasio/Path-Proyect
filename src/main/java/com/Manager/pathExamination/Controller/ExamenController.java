@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.Manager.pathExamination.Model.Institucion;
+import com.Manager.pathExamination.Model.Alumno;
 import com.Manager.pathExamination.Repository.AlumnoRepository;
 import com.Manager.pathExamination.Repository.EstadoRepository;
 import com.Manager.pathExamination.Repository.InstitucionRepository;

@@ -116,7 +116,8 @@
                     <!-- ---------------------------------Inputs Group------------------------------------------- -->
                     <div class="col-6">
                         <label for="nombre" class="form-label">Institution name:</label>
-                        <input type="text" pattern="[A-z- ]{4,35}" name="nombre" th:field="*{nombre}" class="form-control" maxlength="30"
+                        <input type="text" pattern="[A-z- ]{4,35}"
+                               id="nombre"name="nombre" th:field="*{nombre}" class="form-control" maxlength="30"
                             required>
                         <div class="valid-feedback">
                             Looks good!
@@ -124,7 +125,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="tipo" class="form-label">Type:</label>
-                        <select name="tipo" th:field="*{tipo}" class="form-control form-select" required>
+                        <select id="tipo" name="tipo" th:field="*{tipo}" class="form-control form-select" required>
                             <option th:value="Institución" th:text="Institución"></option>
                             <option th:value="Colegio" th:text="Colegio"></option>
                             <option th:value="Instituto" th:text="Instituto"></option>
@@ -133,7 +134,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="pais" class="form-label">Country:</label>
-                        <select name="pais" th:field="*{pais}" class="form-select" required>
+                        <select id="pais"  name="pais" th:field="*{pais}" class="form-select" required>
                             <option th:value="Argentina" th:text="Argentina" selected></option>
                             <option th:value="Chile" th:text="Chile"></option>
                             <option th:value="Uruguay" th:text="Uruguay"></option>
@@ -142,71 +143,71 @@
                     </div>
                     <div class="col-md-4">
                         <label for="provincia" class="form-label">State:</label>
-                        <input type="text" pattern="[A-z- ]{4,35}" class="form-control" name="provincia" placeholder="Buenos Aires"
+                        <input id="provincia"type="text" pattern="[A-z- ]{4,35}" class="form-control" name="provincia" placeholder="Buenos Aires"
                             th:field="*{provincia}" maxlength="30" required>
                     </div>
                     <div class="col-md-4">
                         <label for="ciudad" class="form-label">City:</label>
-                        <input type="text" pattern="[A-z- ]{4,25}" class="form-control" name="ciudad" th:field="*{ciudad}" maxlength="30"
+                        <input id="ciudad" type="text" pattern="[A-z- ]{4,25}" class="form-control" name="ciudad" th:field="*{ciudad}" maxlength="30"
                             required>
                     </div>
                     <div class="col-md-4">
-                        <label for="localidad" class="form-label">Location:</label>
-                        <input type="text" pattern="[A-z- ]{4,25}" class="form-control" name="localidad" th:field="*{localidad}" maxlength="30"
+                        <label  for="localidad" class="form-label">Location:</label>
+                        <input id="localidad" type="text" pattern="[A-z- ]{4,25}" class="form-control" name="localidad" th:field="*{localidad}" maxlength="30"
                             required>
                     </div>
                     <div class="col-md-4">
                         <label for="direccion" class="form-label">Direction:</label>
-                        <input type="text" class="form-control" name="direccion" th:field="*{direccion}" maxlength="30"
+                        <input id="direccion"type="text" class="form-control" name="direccion" th:field="*{direccion}" maxlength="30"
                             required>
                     </div>
                     <div class="col-md-4">
                         <label for="codigo_postal" class="form-label">Zip Code:</label>
-                        <input type="text" class="form-control" name="codigo_postal" th:field="*{codigo_postal}"
+                        <input id="codigo_postal" type="text" class="form-control" name="codigo_postal" th:field="*{codigo_postal}"
                             maxlength="30" required>
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" name="email" th:field="*{email}" maxlength="30"
+                        <input id="email"type="email" class="form-control" name="email" th:field="*{email}" maxlength="30"
                             required>
                     </div>
                     <div class="col-md-6">
                         <label for="telefono" class="form-label">Phone number:</label>
-                        <input type="number" class="form-control" name="telefono" th:field="*{telefono}" maxlength="15"
+                        <input id="telefono" type="number" class="form-control" name="telefono" th:field="*{telefono}" maxlength="15"
                             required>
                     </div>
                     <div class="col-4">
                         <label for="facebook" class="form-label">Facebook:</label>
-                        <input type="text" name="facebook" th:field="*{facebook}" maxlength="60" class="form-control">
+                        <input id="facebook" type="text" name="facebook" th:field="*{facebook}" maxlength="60" class="form-control">
                     </div>
                     <div class="col-4">
                         <label for="instagram" class="form-label">Instagram:</label>
-                        <input type="text" name="instagram" th:field="*{instagram}" maxlength="60" class="form-control">
+                        <input id="instagram" type="text" name="instagram" th:field="*{instagram}" maxlength="60" class="form-control">
                     </div>
                     <div class="col-4">
                         <label for="web" class="form-label">Web page:</label>
-                        <input type="text" name="web" th:field="*{web}" maxlength="100" class="form-control">
+                        <input id="web" type="text" name="web" th:field="*{web}" maxlength="100" class="form-control">
                     </div>
                     <span class="placeholder col-12 placeholder-xs mt-5"></span>
                     <h3 class="text-center">Principal data</h3>
                     <div class="col-6">
                         <label for="nombre_director" class="form-label">Principal's name:</label>
-                        <input type="text" pattern="[A-z- ]{4,25}" name="nombre_director" th:field="*{nombre_director}" maxlength="40"
+                        <input id="nombre_director" type="text" pattern="[A-z- ]{4,25}" name="nombre_director" th:field="*{nombre_director}" maxlength="40"
                             class="form-control" required>
                     </div>
                     <div class="col-6">
                         <label for="apellido_director" class="form-label">Director's last name:</label>
-                        <input type="text" name="apellido_director" pattern="[A-z- ]{4,25}" th:field="*{apellido_director}" maxlength="25"
+                        <input id="apellido_director" type="text" name="apellido_director" pattern="[A-z- ]{4,25}" th:field="*{apellido_director}" maxlength="25"
                             class="form-control" required>
                     </div>
                     <div class="col-6">
                         <label for="nacimiento_director" class="form-label">Date of Birth:</label>
-                        <input type="date" name="nacimiento_director" th:field="*{nacimiento_director}"
+                        <input id="nacimiento_director" type="date" name="nacimiento_director" th:field="*{nacimiento_director}"
                             class="form-control" max="2010-10-20" required>
                     </div>
                     <div class="col-6">
                         <label for="documento_director" class="form-label">DNI:</label>
-                        <input type="text" name="documento_director" th:field="*{documento_director}" pattern="[0-9]{7,11}"
+                        <input id="documento_director" type="text" name="documento_director" th:field="*{documento_director}" pattern="[0-9]{7,11}"
                             class="form-control" required>
                     </div>
 
@@ -228,17 +229,17 @@
                             <div class="card card-body">
                                 <div class="col-6">
                                     <label for="personal_disponible" class="form-label">Staff available for exam day:</label>
-                                    <input type="number"  name="personal_disponible" th:field="*{personal_disponible}" class="form-control" max="100">
+                                    <input id="personal_disponible" type="number"  name="personal_disponible" th:field="*{personal_disponible}" class="form-control" max="100">
                                 </div>
                                 <div class="col-6">
                                 <div class="col-6">
-                                    <label for="alumnos_aula" class="form-label">Number of classrooms available for the exam day:</label>
-                                    <input type="number" name="alumnos_aula" th:field="*{alumnos_aula}"
-                                        class="form-control" max="50">
+                                    <label for="alumnos_aula" class="form-label">Number of classrooms:</label>
+                                    <input id="alumnos_aula" type="number" name="alumnos_aula" th:field="*{alumnos_aula}"
+                                        class="form-control" max="500">
                                 </div>
                                 <div class="col-6">
                                     <label for="cant_baños" class="form-label">Number of bathrooms:</label>
-                                    <input type="number"  name="cant_baños" th:field="*{cant_baños}" class="form-control"
+                                    <input id="cant_baños" type="number"  name="cant_baños" th:field="*{cant_baños}" class="form-control"
                                         max="30">
                                 </div>
                             </div>
@@ -253,7 +254,7 @@
                             <div class="card card-body">
                                 <div class="col-6">
                                     <label for="cant_alumnos_inscribirse" class="form-label">Estimated number of students per year:</label>
-                                    <input type="number" name="cant_alumnos_inscribirse"
+                                    <input id="cant_alumnos_inscribirse" type="number" name="cant_alumnos_inscribirse"
                                         th:field="*{cant_alumnos_inscribirse}" class="form-control" max="100">
                                 </div>
                             </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -135,7 +135,6 @@
                             <td th:text="${institucion.ciudad}"></td>
                             <td th:text="${institucion.email}"></td>
                             <td th:text="${institucion.telefono}"></td>
-                            <!-- <td th:text="${institucion.estado.nombre}"> -->
                             <!-- </td>
                             <td><a th:href="@{/informes/siguienteEstado/}+${institucion.id_institucion}"><i class='bx bxs-chevrons-right'></i></a></td>-->
                             <td sec:authorize="hasAnyRole('VENTAS','ADMINISTRADOR')" class="action">
@@ -158,7 +157,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                                    Al eliminar la institucion, no se volvera a mostrar en el listado
+                                                    When you delete the institution, it will not be shown in the list again.
                                                 </div>
                                             </div>
                                             <div class="modal-footer justify-content-center">
